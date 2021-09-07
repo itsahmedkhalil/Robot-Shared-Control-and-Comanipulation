@@ -1,2 +1,2 @@
 SLERP
--DCATKIN_DEVEL_PREFIX=/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel -DCMAKE_INSTALL_PREFIX=/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install -G Unix Makefiles
+-DCATKIN_DEVEL_PREFIX=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel -DCMAKE_INSTALL_PREFIX=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install -G Unix Makefiles

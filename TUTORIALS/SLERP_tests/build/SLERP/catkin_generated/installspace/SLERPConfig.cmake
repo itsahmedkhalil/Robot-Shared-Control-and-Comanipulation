@@ -67,14 +67,14 @@ set(SLERP_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(SLERP_SOURCE_PREFIX /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP)
-  set(SLERP_DEVEL_PREFIX /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel)
+  set(SLERP_SOURCE_PREFIX /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP)
+  set(SLERP_DEVEL_PREFIX /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel)
   set(SLERP_INSTALL_PREFIX "")
   set(SLERP_PREFIX ${SLERP_DEVEL_PREFIX})
 else()
   set(SLERP_SOURCE_PREFIX "")
   set(SLERP_DEVEL_PREFIX "")
-  set(SLERP_INSTALL_PREFIX /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install)
+  set(SLERP_INSTALL_PREFIX /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install)
   set(SLERP_PREFIX ${SLERP_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install/lib;/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install/lib;/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

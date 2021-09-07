@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/gennodejs/ros/SLERP/msg/Num.js"
+  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/gennodejs/ros/SLERP/msg/Num.js"
   "CMakeFiles/SLERP_generate_messages_nodejs"
 )
 

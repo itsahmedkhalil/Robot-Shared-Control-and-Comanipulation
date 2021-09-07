@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src
+CMAKE_SOURCE_DIR = /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build
+CMAKE_BINARY_DIR = /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build
 
 # Utility rule file for doxygen.
 
@@ -67,6 +67,6 @@ CMakeFiles/doxygen.dir/clean:
 .PHONY : CMakeFiles/doxygen.dir/clean
 
 CMakeFiles/doxygen.dir/depend:
-	cd /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/doxygen.dir/depend
 

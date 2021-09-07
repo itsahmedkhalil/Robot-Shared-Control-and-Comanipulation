@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src
+CMAKE_SOURCE_DIR = /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build
+CMAKE_BINARY_DIR = /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build
 
 # Utility rule file for rosgraph_msgs_generate_messages_lisp.
 
@@ -63,10 +63,10 @@ SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build: rosgraph_msgs_g
 .PHONY : SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
 
 SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
-	cd /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/cmake_clean.cmake
+	cd /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/cmake_clean.cmake
 .PHONY : SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
 
 SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend:
-	cd /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : SLERP/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
 

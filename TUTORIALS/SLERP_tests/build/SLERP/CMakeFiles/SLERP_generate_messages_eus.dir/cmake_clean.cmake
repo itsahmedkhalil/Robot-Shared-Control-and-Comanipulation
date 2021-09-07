@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/roseus/ros/SLERP/manifest.l"
-  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/roseus/ros/SLERP/msg/Num.l"
+  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/roseus/ros/SLERP/manifest.l"
+  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/roseus/ros/SLERP/msg/Num.l"
   "CMakeFiles/SLERP_generate_messages_eus"
 )
 
