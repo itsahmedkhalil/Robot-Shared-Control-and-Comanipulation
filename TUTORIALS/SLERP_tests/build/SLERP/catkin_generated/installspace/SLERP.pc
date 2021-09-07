@@ -1,0 +1,8 @@
+prefix=/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install
+
+Name: SLERP
+Description: Description of SLERP
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: roscpp rospy std_msgs message_runtime geometry_msgs

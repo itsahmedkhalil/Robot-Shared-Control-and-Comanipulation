@@ -1,0 +1,2 @@
+set(SLERP_MESSAGE_FILES "msg/Num.msg")
+set(SLERP_SERVICE_FILES "")
