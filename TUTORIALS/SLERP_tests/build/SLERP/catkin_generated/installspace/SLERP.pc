@@ -1,4 +1,4 @@
-prefix=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install
+prefix=/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install
 
 Name: SLERP
 Description: Description of SLERP

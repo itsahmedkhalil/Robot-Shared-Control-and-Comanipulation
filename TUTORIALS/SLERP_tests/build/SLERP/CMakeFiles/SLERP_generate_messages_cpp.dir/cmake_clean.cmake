@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include/SLERP/Num.h"
+  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include/SLERP/Num.h"
   "CMakeFiles/SLERP_generate_messages_cpp"
 )
 

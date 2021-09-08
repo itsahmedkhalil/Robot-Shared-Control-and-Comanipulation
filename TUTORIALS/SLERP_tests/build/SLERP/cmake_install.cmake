@@ -1,8 +1,8 @@
-# Install script for directory: /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP
+# Install script for directory: /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install")
+  set(CMAKE_INSTALL_PREFIX "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,61 +38,61 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/msg" TYPE FILE FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP/msg/Num.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/msg" TYPE FILE FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP/msg/Num.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/cmake" TYPE FILE FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERP-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/cmake" TYPE FILE FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERP-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include/SLERP")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include/SLERP")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/roseus/ros/SLERP")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/roseus/ros/SLERP")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/common-lisp/ros/SLERP")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/common-lisp/ros/SLERP")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/gennodejs/ros/SLERP")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/gennodejs/ros/SLERP")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP")
+  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERP.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERP.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/cmake" TYPE FILE FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERP-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/cmake" TYPE FILE FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERP-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP/cmake" TYPE FILE FILES
-    "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERPConfig.cmake"
-    "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERPConfig-version.cmake"
+    "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERPConfig.cmake"
+    "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/SLERPConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP" TYPE FILE FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/SLERP" TYPE FILE FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/SLERP" TYPE PROGRAM FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/slerper.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/SLERP" TYPE PROGRAM FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/slerper.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/SLERP" TYPE PROGRAM FILES "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/listen.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/SLERP" TYPE PROGRAM FILES "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build/SLERP/catkin_generated/installspace/listen.py")
 endif()
 

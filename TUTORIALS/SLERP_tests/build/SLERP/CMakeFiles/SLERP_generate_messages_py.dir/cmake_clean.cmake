@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP/msg/_Num.py"
-  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP/msg/__init__.py"
+  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP/msg/_Num.py"
+  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib/python3/dist-packages/SLERP/msg/__init__.py"
   "CMakeFiles/SLERP_generate_messages_py"
 )
 

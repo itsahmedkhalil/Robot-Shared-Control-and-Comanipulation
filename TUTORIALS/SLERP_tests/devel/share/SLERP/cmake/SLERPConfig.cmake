@@ -67,14 +67,14 @@ set(SLERP_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(SLERP_SOURCE_PREFIX /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP)
-  set(SLERP_DEVEL_PREFIX /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel)
+  set(SLERP_SOURCE_PREFIX /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP)
+  set(SLERP_DEVEL_PREFIX /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel)
   set(SLERP_INSTALL_PREFIX "")
   set(SLERP_PREFIX ${SLERP_DEVEL_PREFIX})
 else()
   set(SLERP_SOURCE_PREFIX "")
   set(SLERP_DEVEL_PREFIX "")
-  set(SLERP_INSTALL_PREFIX /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install)
+  set(SLERP_INSTALL_PREFIX /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/install)
   set(SLERP_PREFIX ${SLERP_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(SLERP_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include " STREQUAL " ")
+if(NOT "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include " STREQUAL " ")
   set(SLERP_INCLUDE_DIRS "")
-  set(_include_dirs "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include")
+  set(_include_dirs "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUT
         message(FATAL_ERROR "Project 'SLERP' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'SLERP' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'SLERP' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src/SLERP/${idir}'.  ${_report}")
     endif()
     _list_append_unique(SLERP_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib;/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

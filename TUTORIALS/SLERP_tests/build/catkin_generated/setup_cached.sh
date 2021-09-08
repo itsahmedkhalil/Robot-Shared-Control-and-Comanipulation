@@ -7,8 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export LD_LIBRARY_PATH='/opt/ros/noetic/lib'
-export PKG_CONFIG_PATH='/opt/ros/noetic/lib/pkgconfig'
-export PWD='/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build'
-export PYTHONPATH='/opt/ros/noetic/lib/python3/dist-packages'
-export ROS_PACKAGE_PATH='/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src:/opt/ros/noetic/share'
+export CMAKE_PREFIX_PATH="/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/common-lisp'
+export ROS_PACKAGE_PATH="/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/src:$ROS_PACKAGE_PATH"

@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/common-lisp/ros/SLERP/msg/Num.lisp"
+  "/home/mohamed/Robot-Shared-Control-and-Comanipulation/TUTORIALS/SLERP_tests/devel/share/common-lisp/ros/SLERP/msg/Num.lisp"
   "CMakeFiles/SLERP_generate_messages_lisp"
 )
 
