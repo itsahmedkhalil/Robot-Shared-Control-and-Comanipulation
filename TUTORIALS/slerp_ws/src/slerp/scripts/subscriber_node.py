@@ -18,11 +18,8 @@ def callback(data):
     t = data.t 
     ans = str(quaternion.as_float_array(quaternion.slerp_evaluate(q1, q2, t)))
     rospy.loginfo("Answer calculated")
-    rospy.loginfo(ans)
-    rospy.loginfo(type(ans))
     time.sleep(5)
     pub.publish(ans)
-    time.sleep(5)
     rospy.loginfo("Answer sent")
    
 
