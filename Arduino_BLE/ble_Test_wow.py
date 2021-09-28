@@ -14,14 +14,14 @@ def main():
 	accCharUuid = "4664E7A1-5A13-BFFF-4636-7D0A4B16496C"
 	
 	print("Connecting......", accelServiceUuid)
-	peripheralObject = btle.Peripheral(sys.argv[1]);
+	peripheralObject = btle.Peripheral(sys.argv[1])
 
 	print("Services...")
 	for svc in peripheralObject.services:
 		print(str(svc))
 
-	mySensor = btle.UUID(accelServiceUuid);
-	sensorService = peripheralObject.getServiceByUUID(mySensor);
+	mySensor = btle.UUID(accelServiceUuid)
+	sensorService = peripheralObject.getServiceByUUID(mySensor)
 	
 	print("get Characteristics...")
 	accVal = sensorService.getCharacteristics(accCharUuid)[0]
@@ -33,13 +33,11 @@ def parseFloatData(data):
 	data = binascii.b2a_hex(data)
 	data = binascii.unhexlify(data)
 
-	print(data)
+	# print(data)
 	info = [data[i:i+4] for i in range (0, len(data), 4)]
 
 	ans = struct.unpack('<f', info[0]) + struct.unpack('<f', info[1]) + struct.unpack('<f', info[2]) + struct.unpack('<f', info[3]) + struct.unpack('<f', info[4]) + struct.unpack('<f', info[5]) 
 	return ans
-	# data = struct.unpack('<f', data)
-	# data.decode("utf-8") 
 	
 
 
