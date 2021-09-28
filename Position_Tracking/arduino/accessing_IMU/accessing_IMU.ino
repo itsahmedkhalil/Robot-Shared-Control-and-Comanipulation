@@ -1,10 +1,3 @@
-/* 
- Arduino LSM9DS1 - Accelerometer Application3
-This example reads the acceleration values as relative direction and degrees,5  from the LSM9DS1 sensor and prints them to the Serial Monitor or Serial Plotter.6
-7  The circuit:8  - Arduino Nano 33 BLE9
-10  Created by Riccardo Rizzo11
-12  Modified by Jose García13  27 Nov 202014
-15  This example code is in the public domain.*/
 #include <Arduino_LSM9DS1.h>
 
 float Ax, Ay, Az;
