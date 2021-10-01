@@ -50,30 +50,31 @@ void loop() {
     Serial.print(',');
     Serial.print(Az);
     Serial.print(',');
-  }
-
-  if (IMU.gyroscopeAvailable()) {
-    IMU.readGyroscope(Gx, Gy, Gz);
-    
-    Serial.print(Gx);
-    Serial.print(',');
-    Serial.print(Gy);
-    Serial.print(',');
-    Serial.print(Gz);
-    Serial.print(',');
-  }
-
-  if (IMU.magneticFieldAvailable()) {
-    IMU.readMagneticField(Mx, My, Mz);
-
-    Serial.print(Mx);
-    Serial.print(',');
-    Serial.print(My);
-    Serial.print(',');
-    Serial.print(Mz);
     Serial.println();
   }
 
-delay(40); //need to delay for magnetometer
+//  if (IMU.gyroscopeAvailable()) {
+//    IMU.readGyroscope(Gx, Gy, Gz);
+//    
+//    Serial.print(Gx);
+//    Serial.print(',');
+//    Serial.print(Gy);
+//    Serial.print(',');
+//    Serial.print(Gz);
+//    Serial.print(',');
+//  }
+//
+//  if (IMU.magneticFieldAvailable()) {
+//    IMU.readMagneticField(Mx, My, Mz);
+//
+//    Serial.print(Mx);
+//    Serial.print(',');
+//    Serial.print(My);
+//    Serial.print(',');
+//    Serial.print(Mz);
+//    Serial.println();
+//  }
+
+delay(2000); //need to delay for magnetometer
 
   }
