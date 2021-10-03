@@ -42,7 +42,7 @@ void setup() {
 void loop() {
 
   if (IMU.accelerationAvailable()) {
-    IMU.readAcceleration(Ax, Ay, Az);
+    IMU.readAcceleration(Ax, Ay, Az); //MEASURED IN G's
 
     Serial.print(Ax);
     Serial.print(',');
@@ -54,7 +54,7 @@ void loop() {
   }
 
 //  if (IMU.gyroscopeAvailable()) {
-//    IMU.readGyroscope(Gx, Gy, Gz);
+//    IMU.readGyroscope(Gx, Gy, Gz); //MEASURED IN DEGREES/s 
 //    
 //    Serial.print(Gx);
 //    Serial.print(',');
@@ -65,7 +65,7 @@ void loop() {
 //  }
 //
 //  if (IMU.magneticFieldAvailable()) {
-//    IMU.readMagneticField(Mx, My, Mz);
+//    IMU.readMagneticField(Mx, My, Mz); //MEASURED IN Gauss's 1x-4 Tesla
 //
 //    Serial.print(Mx);
 //    Serial.print(',');
@@ -75,6 +75,6 @@ void loop() {
 //    Serial.println();
 //  }
 
-delay(2000); //need to delay for magnetometer
+delay(20); //need to delay for magnetometer
 
   }
