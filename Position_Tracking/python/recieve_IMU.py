@@ -3,7 +3,7 @@ from time import time
 import serial
 
 # Your serial port might be different!
-ser = serial.Serial('/dev/cu.usbmodem11201', timeout=1) #Change serial port
+ser = serial.Serial('/dev/cu.usbmodem11301', timeout=1) #Change serial port
 
 f = open("StationaryIMU2.csv", "a+")
 writer = csv.writer(f, delimiter=',')
