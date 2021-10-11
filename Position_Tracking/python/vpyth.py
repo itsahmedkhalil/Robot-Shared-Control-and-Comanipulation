@@ -62,14 +62,14 @@ quat = q_data
 acc = quaternionRotate([accX, accY, accZ], quaternionConjugate(quat))
 acc = np.array(acc) - np.array([np.zeros(num_samples), np.zeros(num_samples), np.ones(num_samples)])
 acc = acc*9.81
-t_limit = int(sampling_t[-1]-sampling_t[0])
+t_sample = int(sampling_t[-1]-sampling_t[0])/len(sampling_t)
 #time_xaxis = np.linspace(0, 0.1, len)
 #Placing the plots in the plane
 xdata = acc[0]
 ydata = acc[1]
 zdata = acc[2]
 
-dt = 0.02 #time between samples THIS SHOULD BE 1/sampling frequency from the ARDUINO (1/40Hz)
+dt = t_sample#time between samples THIS SHOULD BE 1/sampling frequency from the ARDUINO (1/40Hz)
 #double integrating using the composite trapezoidal rule each acceleration vector to get position
 posx =cumtrapz(cumtrapz(xdata,dx=dt),dx=dt)
 posy =cumtrapz(cumtrapz(ydata,dx=dt),dx=dt)
