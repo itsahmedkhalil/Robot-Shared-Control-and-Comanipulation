@@ -61,7 +61,7 @@ find_package(catkin REQUIRED COMPONENTS
 #   Service2.srv
 # )
 
-## Generate actions in the 'action' folder
+## Generate actions in the 'action' folders
 # add_action_files(
 #   FILES
 #   Action1.action
@@ -160,7 +160,7 @@ include_directories(
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
 ## Mark executable scripts (Python etc.) for installation
-## in contrast to setup.py, you can choose the destination
+## in contrast to setup.py, you can choose the destinations
  catkin_install_python(PROGRAMS
    scripts/slerper.py scripts/listen.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -79,6 +79,7 @@ void loop() {
     Serial.print(',');
     Serial.print(Gz);
     Serial.print(',');
+    //Serial.println();
   }
 
   if (IMU.magneticFieldAvailable()) {
@@ -92,6 +93,6 @@ void loop() {
     Serial.println();
   }
 
-delay(60); //need to delay for magnetometer
+delay(40); //need to delay for magnetometer
 
   }
