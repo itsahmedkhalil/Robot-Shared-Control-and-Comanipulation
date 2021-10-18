@@ -7,5 +7,7 @@
 # new environment variables
 
 # modified environment variables
+export LD_LIBRARY_PATH='/opt/ros/noetic/lib'
+export PKG_CONFIG_PATH='/opt/ros/noetic/lib/pkgconfig'
 export PWD='/home/mohamed/Desktop/Fall_Research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_ws/build'
-export PYTHONPATH="/home/mohamed/Desktop/Fall_Research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_ws/devel/lib/python3/dist-packages:$PYTHONPATH"
+export PYTHONPATH='/opt/ros/noetic/lib/python3/dist-packages'
