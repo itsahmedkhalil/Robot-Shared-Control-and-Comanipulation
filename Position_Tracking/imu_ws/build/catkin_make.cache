@@ -1,2 +1,0 @@
-imu_communication
--DCATKIN_DEVEL_PREFIX=/home/mohamed/Desktop/Fall_Research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_ws/devel -DCMAKE_INSTALL_PREFIX=/home/mohamed/Desktop/Fall_Research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_ws/install -G Unix Makefiles
