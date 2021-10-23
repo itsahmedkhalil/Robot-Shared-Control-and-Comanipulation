@@ -92,6 +92,6 @@ void loop() {
     Serial.println();
   }
 
-delay(40); //need to delay for magnetometer
+delay(30); //need to delay for magnetometer
 
   }
