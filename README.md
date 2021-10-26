@@ -18,16 +18,16 @@
 
 3. RVIZ
     + Access ROS WS
-        - `$ cd Position_Tracking/imu_ws/
+        - `$ cd Position_Tracking/imu_ws/`
 
     + Change permissions for Python script
-        - `$ roscd imu_communication/scripts/
-        - `$ sudo chmod +x pub.py
+        - `$ roscd imu_communication/scripts/`
+        - `$ sudo chmod +x pub.py`
 
     + Change permissions for Launch file
-        - `$ roscd imu_communication/launch/
-        - `$ sudo chmod +x rviz.launch
+        - `$ roscd imu_communication/launch/`
+        - `$ sudo chmod +x rviz.launch`
 
     + Run the launch file
-        - `$ roslaunch imu_communication rviz.launch
+        - `$ roslaunch imu_communication rviz.launch`
 
