@@ -16,3 +16,18 @@
     + Run the test.py script in your terminal by running the following:
     	- `$ python3 test.py [MAC ADDRESS FROM ARDUINO]`
 
+3. RVIZ
+    + Access ROS WS
+        - `$ cd Position_Tracking/imu_ws/
+
+    + Change permissions for Python script
+        - `$ roscd imu_communication/scripts/
+        - `$ sudo chmod +x pub.py
+
+    + Change permissions for Launch file
+        - `$ roscd imu_communication/launch/
+        - `$ sudo chmod +x rviz.launch
+
+    + Run the launch file
+        - `$ roslaunch imu_communication rviz.launch
+
