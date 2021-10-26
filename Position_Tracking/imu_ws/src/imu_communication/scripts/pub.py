@@ -14,7 +14,7 @@ import pandas as pd
 # Your serial port might be different!
 
 def runLoop():
-    ser = serial.Serial('/dev/arduinoNano', timeout=1)
+    ser = serial.Serial('/dev/ttyACM0', timeout=1)
     marker_pub = rospy.Publisher("/visualization_marker", Marker, queue_size = 2)
     rate = rospy.Rate(100) # 10hz
     marker = Marker()
