@@ -1,5 +1,9 @@
 <launch>
-    <node name="publisher_node" pkg="imu_communication" type="pub.py" output="screen"/>
+    <param name="robot_description" command = "$(find xacro)/xacro --inorder '$(find imu_communication)/urdf/arduino.xacro'"></param>
+    <node name="my_broadcaster" pkg="imu_communication" type="pubstl.py" output="screen"/>
+    <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+    </node> -->
+    <!-- <node name="publisher_node" pkg="imu_communication" type="pub.py" output="screen"/> -->
     <node name="rviz" type="rviz" pkg="rviz" args="-d $(find imu_communication)/rviz/imu_communication.rviz"/>
-    <node pkg="tf" type="static_transform_publisher" name="base_link" args="args=1 0 0 0 0 0 1 map base_link 100" />
+    <!-- <node pkg="tf" type="static_transform_publisher" name="base_link" args="args=1 0 0 0 0 0 1 map base_link 100" /> -->
 </launch>
