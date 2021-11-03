@@ -35,16 +35,18 @@ def runLoop():
 
     print("Calibration Started")
     for i in range(100):
-        ser_bytes = ser.readline()  
+        ser_bytes = ser.readline() 
         decoded_bytes = str(ser_bytes.decode("ascii"))
-        rawData = [float(x) for x in decoded_bytes.split(",")]
-        rawDataList.append(rawData)
-        i+=1
-    rawDataDF = pd.DataFrame(rawDataList, columns =['accx','accy', 'accz','gyrx', 'gyry','gyrz', 'magx','magy', 'magz']) 
+        if decoded_bytes[0] != 'C':
+            rawData = [float(x) for x in decoded_bytes.split(",")]
+            rawDataList.append(rawData)
+            i+=1
+        pass
+    rawDataDF = pd.DataFrame(rawDataList, columns =['accx','accy', 'accz','gyrx', 'gyry','gyrz', 'magx','magy', 'magz', 'qW', 'qX', 'qY', 'qZ']) 
     noise_acc = [np.sum(rawDataDF['accx'])/np.size(rawDataDF['accx']),np.sum(rawDataDF['accy'])/np.size(rawDataDF['accy']),np.sum(rawDataDF['accz'])/np.size(rawDataDF['accz'])]
     vel = np.zeros(3)
     dist = np.zeros(3)  
-    dt = 0.025
+    dt = 0.030
     print("Calibrated")
     
     while not rospy.is_shutdown():
@@ -52,11 +54,15 @@ def runLoop():
             t = float(time())
             ser_bytes = ser.readline()  
             decoded_bytes = str(ser_bytes.decode("ascii"))
-            rawData = [float(x) for x in decoded_bytes.split(",")]
-            acc = np.subtract(rawData[0:3], noise_acc)
+            if decoded_bytes[0] != 'C':
+                rawData = [float(x) for x in decoded_bytes.split(",")]
+                acc = np.subtract(rawData[0:3], noise_acc)
+                quat = rawData[9:]
             for i in range(len(acc)):
-                if abs(acc[i]) < 0.005:
-                    acc[0] = 0
+                if abs(acc[i]) < 5:
+                    acc[i] = 0
+                #acc[i]=acc[i]*9.81
+                
             # for i in range(len(acc)):
             #     if (acc[i]) == 0    :
             #         vel[i] = 0
@@ -65,7 +71,8 @@ def runLoop():
 
             #marker.header.stamp = rospy.Time.now()
             #marker_pub.publish(t)
-            translation=(dist[0], dist[1], 0.0)
+            #translation=(dist[0], dist[1], 0.0)
+            rotation = (quat[1], quat[2], quat[3], quat[0])
             b.sendTransform(translation, rotation, Time.now(), 'arduino', '/world')
             #rospy.loginfo(marker)
             #print(acc)
