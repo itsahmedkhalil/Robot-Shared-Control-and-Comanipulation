@@ -19,6 +19,7 @@ float qw,qx,qy,qz;
    
 */
 
+int LED =9; // led light at pin 9
 const int BUTTON = 4; // Naming switch button pin
 int BUTTONstate = 0; // A variable to store Button Status / Input
 
@@ -36,6 +37,8 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28);
 /**************************************************************************/
 void setup(void)
 {
+
+  pinMode(LED, OUTPUT);
   Serial.begin(115200);
   pinMode (BUTTON, INPUT);
   /* Initialise the sensor */
@@ -95,45 +98,8 @@ void loop(void)
     Az = 0;
   }
 
-  imu::Quaternion quat = bno.getQuat();
-  /* Display the floating point data */
-  Serial.print(String(Ax));
-  Serial.print(',');
-  Serial.print(String(Ay));
-  Serial.print(',');
-  Serial.print(String(Az));
-  Serial.print(',');
-  Serial.print(String(Gx));
-  Serial.print(',');
-  Serial.print(String(Gy));
-  Serial.print(',');
-  Serial.print(String(Gz));
-  Serial.print(',');
-  Serial.print(String(Mx));
-  Serial.print(',');
-  Serial.print(String(My));
-  Serial.print(',');
-  Serial.print(String(Mz));
-  Serial.print(',');
-  //Serial.println();
-
-
-  Serial.print(quat.w(), 4);
-  //Serial.print(String(qw));
-  Serial.print(',');
-  Serial.print(quat.x(), 4);
-  //Serial.print(String(qx));
-  Serial.print(',');
-  Serial.print(quat.y(), 4);
-  //Serial.print(String(qy));
-  Serial.print(',');
-  Serial.print(quat.z(), 4);
-  //Serial.print(String(qz));
-  Serial.println();
-  
-
-  /* Display calibration status for each sensor. */
-    uint8_t system, gyro, accel, mag = 0;
+   /* Display calibration status for each sensor. */
+  uint8_t system, gyro, accel, mag = 0;
   bno.getCalibration(&system, &gyro, &accel, &mag);
   Serial.print("CALIBRATION: Sys=");
   Serial.print(system, DEC);
@@ -143,6 +109,53 @@ void loop(void)
   Serial.print(accel, DEC);
   Serial.print(" Mag=");
   Serial.println(mag, DEC);
+
+  if (accel == 3 && system == 3){
+    digitalWrite(LED, HIGH);
+  
+    imu::Quaternion quat = bno.getQuat();
+    /* Display the floating point data */
+    Serial.print(String(Ax));
+    Serial.print(',');
+    Serial.print(String(Ay));
+    Serial.print(',');
+    Serial.print(String(Az));
+    Serial.print(',');
+    Serial.print(String(Gx));
+    Serial.print(',');
+    Serial.print(String(Gy));
+    Serial.print(',');
+    Serial.print(String(Gz));
+    Serial.print(',');
+    Serial.print(String(Mx));
+    Serial.print(',');
+    Serial.print(String(My));
+    Serial.print(',');
+    Serial.print(String(Mz));
+    Serial.print(',');
+    //Serial.println();
+  
+  
+    Serial.print(quat.w(), 4);
+    //Serial.print(String(qw));
+    Serial.print(',');
+    Serial.print(quat.x(), 4);
+    //Serial.print(String(qx));
+    Serial.print(',');
+    Serial.print(quat.y(), 4);
+    //Serial.print(String(qy));
+    Serial.print(',');
+    Serial.print(quat.z(), 4);
+    //Serial.print(String(qz));
+    Serial.println();
+  
+    }
+
+  else {
+    digitalWrite(LED, LOW);
+    }
+  
+
 
   delay(10);
 }
