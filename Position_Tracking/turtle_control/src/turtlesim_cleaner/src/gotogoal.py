@@ -113,7 +113,7 @@ class TurtleBot:
 
                 # Publishing our vel_msg
                 self.velocity_publisher.publish(vel_msg)
-                rospy.loginfo(dist[])
+                #rospy.loginfo(dist[])
 
 
             except Exception as e:
