@@ -72,7 +72,7 @@ def runLoop():
             #         vel[i] = 0
             vel = vel + acc*dt
             dist = (dist + vel*dt)
-            marker.pose.position.x = dist[0]
+            marker.pose.position.x = 100
             marker.pose.position.y = dist[1]
             marker.pose.position.z = 0
             marker.pose.orientation.x = 0.0

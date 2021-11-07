@@ -1,0 +1,2 @@
+TurtleSim_Snake_Game
+-DCATKIN_DEVEL_PREFIX=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_game/devel -DCMAKE_INSTALL_PREFIX=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_game/install -G Unix Makefiles
