@@ -15,13 +15,13 @@ import numpy as np
 import pandas as pd
 from rospy import Time
 from scipy.spatial.transform import Rotation as R
+import random
 
 # Your serial port might be different!
 
 def runLoop():
     ser = serial.Serial('/dev/ttyACM0', timeout=1)
     b = TransformBroadcaster()
-    #marker_pub = rospy.Publisher("/visualization_marker", Marker, queue_size = 2)
     translation = (0.0, 0.0, 0.0)
     rotation = (0.0, 0.0, 0.0, 1.0)
     rate = rospy.Rate(100) # 
@@ -32,6 +32,29 @@ def runLoop():
     vel = [0, 0 , 0]
     dist = [0, 0, 0]
     rawDataList = []
+
+    # Initialize the publisher for the marker
+    marker_pub = rospy.Publisher("/visualization_marker", Marker, queue_size = 2)
+    marker = Marker()
+    marker.header.frame_id = "/world"
+    marker.pose.orientation.x = 0.0
+    marker.pose.orientation.y = 0.0
+    marker.pose.orientation.z = 0.0
+    marker.pose.orientation.w = 1.0
+
+    # set shape, Arrow: 0; Cube: 1 ; Sphere: 2 ; Cylinder: 3
+    marker.type = 1
+    marker.id = 0
+    # Set the scale of the marker
+    marker.scale.x = 0.1
+    marker.scale.y = 0.1
+    marker.scale.z = 0.1
+    # Set the color
+    marker.color.r = 0.0
+    marker.color.g = 1.0
+    marker.color.b = 0.0
+    marker.color.a = 1.0
+
 
     print("Calibration Started")
     # for i in range(100):
@@ -77,10 +100,25 @@ def runLoop():
         
             translation=(dist[0], dist[1], dist[2])
             rotation = (quat[1], quat[2], quat[3], quat[0])
-            rospy.loginfo(np.linalg.norm(r_acc))
 
+            #marker initial position
+            marker.pose.position.x = 0
+            marker.pose.position.y = 0
+            marker.pose.position.z = 0
 
-
+            #marker distance between imu and marker
+            delta_distX = dist[0] - marker.pose.position.x
+            delta_distY = dist[1] - marker.pose.position.y
+            #if the distance is cloes to 0, the marker move to a random position
+            if 0<delta_distX < 0.1 and 0<delta_distY < 0.1:
+                
+                marker.pose.position.x = random.randint(1,10)
+                marker.pose.position.y = random.randint(1,10)
+                marker.pose.position.z = 0
+            else:
+                pass
+            marker_pub.publish(marker)
+            #rospy.loginfo(np.linalg.norm(r_acc))
             b.sendTransform(translation, rotation, Time.now(), 'arduino', '/world')
             #rospy.loginfo(marker)
             
