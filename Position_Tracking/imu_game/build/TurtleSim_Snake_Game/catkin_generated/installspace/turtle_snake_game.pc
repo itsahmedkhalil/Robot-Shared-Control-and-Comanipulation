@@ -1,8 +1,0 @@
-prefix=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_game/install
-
-Name: turtle_snake_game
-Description: Description of turtle_snake_game
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

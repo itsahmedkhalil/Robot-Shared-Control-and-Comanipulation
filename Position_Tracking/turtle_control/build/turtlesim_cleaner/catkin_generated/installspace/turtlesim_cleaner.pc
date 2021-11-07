@@ -1,8 +1,0 @@
-prefix=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/turtle_control/install
-
-Name: turtlesim_cleaner
-Description: Description of turtlesim_cleaner
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -1,2 +1,0 @@
-turtlesim_cleaner
--DCATKIN_DEVEL_PREFIX=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/turtle_control/devel -DCMAKE_INSTALL_PREFIX=/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/turtle_control/install -G Unix Makefiles
