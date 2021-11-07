@@ -36,11 +36,16 @@ def runLoop():
     # Initialize the publisher for the marker
     marker_pub = rospy.Publisher("/visualization_marker", Marker, queue_size = 2)
     marker = Marker()
-    marker.header.frame_id = "/world"
+    marker.header.frame_id = "world"
     marker.pose.orientation.x = 0.0
     marker.pose.orientation.y = 0.0
     marker.pose.orientation.z = 0.0
     marker.pose.orientation.w = 1.0
+
+    #marker initial position
+    marker.pose.position.x = 0
+    marker.pose.position.y = 0
+    marker.pose.position.z = 0
 
     # set shape, Arrow: 0; Cube: 1 ; Sphere: 2 ; Cylinder: 3
     marker.type = 1
@@ -71,7 +76,7 @@ def runLoop():
     dist = np.zeros(3)  
     dt = 0.01
     print("Calibrated")
-    
+    counter = 0
     while not rospy.is_shutdown():
         try:
             t = float(time())
@@ -85,36 +90,36 @@ def runLoop():
             r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
             r_acc = r.apply(acc)
 
-            # r_acc = r_acc - np.array([0, 0, 9.81])
-            # for i in range(len(r_acc)):
-            #     if abs(r_acc[i]) < 0.5:
-            #         r_acc[i] = 0
+            r_acc = r_acc - np.array([0, 0, 9.81])
+            for i in range(len(r_acc)):
+                if abs(r_acc[i]) < 0.1:
+                    r_acc[i] = 0
                 
-            # for i in range(len(r_acc)):
-            #     if (r_acc[i]) == 0:
-            #         vel[i] = 0
+            for i in range(len(r_acc)):
+                if (r_acc[i]) == 0:
+                    vel[i] = 0
     
             vel = vel + r_acc*dt
             dist = (dist + vel*dt)
         
         
-            translation=(dist[0], dist[1], dist[2])
+            translation=(dist[0]*10, dist[1]*10, 0)
             rotation = (quat[1], quat[2], quat[3], quat[0])
 
-            #marker initial position
-            marker.pose.position.x = 0
-            marker.pose.position.y = 0
-            marker.pose.position.z = 0
 
             #marker distance between imu and marker
             delta_distX = dist[0] - marker.pose.position.x
             delta_distY = dist[1] - marker.pose.position.y
+            
             #if the distance is cloes to 0, the marker move to a random position
             if 0<delta_distX < 0.1 and 0<delta_distY < 0.1:
-                
-                marker.pose.position.x = random.randint(1,10)
-                marker.pose.position.y = random.randint(1,10)
+                counter += 1
+                marker.pose.position.x = random.randint(-2,2)
+                marker.pose.position.y = random.randint(-2,2)
+                print("new marker position:", marker.pose.position.x, marker.pose.position.y)
                 marker.pose.position.z = 0
+                print("you got number of points! :", counter)
+
             else:
                 pass
             marker_pub.publish(marker)
