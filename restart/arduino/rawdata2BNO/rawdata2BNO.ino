@@ -70,7 +70,7 @@ void loop(void)
     imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
     imu::Vector<3> gyr = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
     imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);  
-    imu::Quaternion quat = bno.getQuat();
+
     
     Ax = acc.x();
     Ay = acc.y();
@@ -84,17 +84,18 @@ void loop(void)
     Gy = gyr.y();
     Gz = gyr.z();
 
-    qw = quat.w();
-    qx = quat.x();
-    qy = quat.y();
-    qz = quat.z();
+//    qw = quat.w();
+//    qx = quat.x();
+//    qy = quat.y();
+//    qz = quat.z();
   }
   else {
     Ax = 0;
     Ay = 0;
     Az = 0;
   }
-  
+
+  imu::Quaternion quat = bno.getQuat();
   /* Display the floating point data */
   Serial.print(String(Ax));
   Serial.print(',');
@@ -115,14 +116,19 @@ void loop(void)
   Serial.print(String(Mz));
   Serial.print(',');
   //Serial.println();
-  
-  Serial.print(String(qw));
+
+
+  Serial.print(quat.w(), 4);
+  //Serial.print(String(qw));
   Serial.print(',');
-  Serial.print(String(qx));
+  Serial.print(quat.x(), 4);
+  //Serial.print(String(qx));
   Serial.print(',');
-  Serial.print(String(qy));
+  Serial.print(quat.y(), 4);
+  //Serial.print(String(qy));
   Serial.print(',');
-  Serial.print(String(qz));
+  Serial.print(quat.z(), 4);
+  //Serial.print(String(qz));
   Serial.println();
   
 
