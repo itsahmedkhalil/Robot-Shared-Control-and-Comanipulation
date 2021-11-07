@@ -6,6 +6,7 @@
 float Ax, Ay, Az;
 float Gx, Gy, Gz;
 float Mx, My, Mz;
+float qw,qx,qy,qz;
 
 /* This driver reads raw data from the BNO055
 
@@ -17,6 +18,9 @@ float Mx, My, Mz;
    Connect GROUND to common ground
    
 */
+
+const int BUTTON = 4; // Naming switch button pin
+int BUTTONstate = 0; // A variable to store Button Status / Input
 
 /* Set the delay between fresh samples */
 #define BNO055_SAMPLERATE_DELAY_MS (100)
@@ -33,6 +37,7 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28);
 void setup(void)
 {
   Serial.begin(115200);
+  pinMode (BUTTON, INPUT);
   /* Initialise the sensor */
   if(!bno.begin())
   {
@@ -58,22 +63,37 @@ void loop(void)
   // - VECTOR_EULER         - degrees
   // - VECTOR_LINEARACCEL   - m/s^2
   // - VECTOR_GRAVITY       - m/s^2
-  imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  imu::Vector<3> gyr = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
-  imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);  
-  imu::Quaternion quat = bno.getQuat();
 
-  Ax = acc.x();
-  Ay = acc.y();
-  Az = acc.z();
+  BUTTONstate = digitalRead(BUTTON);  // Reading button status / input
 
-  Mx = magn.x();
-  My = magn.y();
-  Mz = magn.z();
+  if (BUTTONstate == LOW) {
+    imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+    imu::Vector<3> gyr = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
+    imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);  
+    imu::Quaternion quat = bno.getQuat();
+    
+    Ax = acc.x();
+    Ay = acc.y();
+    Az = acc.z();
+    
+    Mx = magn.x();
+    My = magn.y();
+    Mz = magn.z();
+    
+    Gx = gyr.x();
+    Gy = gyr.y();
+    Gz = gyr.z();
 
-  Gx = gyr.x();
-  Gy = gyr.y();
-  Gz = gyr.z();
+    qw = quat.w();
+    qx = quat.x();
+    qy = quat.y();
+    qz = quat.z();
+  }
+  else {
+    Ax = 0;
+    Ay = 0;
+    Az = 0;
+  }
   
   /* Display the floating point data */
   Serial.print(String(Ax));
@@ -96,13 +116,13 @@ void loop(void)
   Serial.print(',');
   //Serial.println();
   
-  Serial.print(quat.w(), 4);
+  Serial.print(String(qw));
   Serial.print(',');
-  Serial.print(quat.x(), 4);
+  Serial.print(String(qx));
   Serial.print(',');
-  Serial.print(quat.y(), 4);
+  Serial.print(String(qy));
   Serial.print(',');
-  Serial.print(quat.z(), 4);
+  Serial.print(String(qz));
   Serial.println();
   
 
