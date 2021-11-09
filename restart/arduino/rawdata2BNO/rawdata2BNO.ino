@@ -4,9 +4,9 @@
 #include <utility/imumaths.h>
 
 float Ax, Ay, Az;
-float Gx, Gy, Gz;
-float Mx, My, Mz;
-float qw,qx,qy,qz;
+/*float Gx, Gy, Gz;
+float Mx, My, Mz;*/
+float Qw,Qx,Qy,Qz;
 
 /* This driver reads raw data from the BNO055
 
@@ -69,33 +69,23 @@ void loop(void)
 
   BUTTONstate = digitalRead(BUTTON);  // Reading button status / input
 
-  if (BUTTONstate == LOW) {
+  
+  
+  if (BUTTONstate == HIGH) {    
+    Ax = 0;
+    Ay = 0;
+    Az = 0;  
+  }
+  else {
     imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
-    imu::Vector<3> gyr = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
-    imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);  
-
-    
+    imu::Quaternion quat = bno.getQuat();
     Ax = acc.x();
     Ay = acc.y();
     Az = acc.z();
-    
-    Mx = magn.x();
-    My = magn.y();
-    Mz = magn.z();
-    
-    Gx = gyr.x();
-    Gy = gyr.y();
-    Gz = gyr.z();
-
-//    qw = quat.w();
-//    qx = quat.x();
-//    qy = quat.y();
-//    qz = quat.z();
-  }
-  else {
-    Ax = 0;
-    Ay = 0;
-    Az = 0;
+    Qx = quat.x();
+    Qy = quat.y();
+    Qz = quat.z();
+    Qw = quat.w();
   }
 
    /* Display calibration status for each sensor. */
@@ -113,49 +103,26 @@ void loop(void)
   if (accel == 3 && system == 3){
     digitalWrite(LED, HIGH);
   
-    imu::Quaternion quat = bno.getQuat();
     /* Display the floating point data */
-    Serial.print(String(Ax));
+    Serial.print(Ax);
     Serial.print(',');
-    Serial.print(String(Ay));
+    Serial.print(Ay);
     Serial.print(',');
-    Serial.print(String(Az));
+    Serial.print(Az);
     Serial.print(',');
-    Serial.print(String(Gx));
+    Serial.print(Qw, 4);
     Serial.print(',');
-    Serial.print(String(Gy));
+    Serial.print(Qx, 4);
     Serial.print(',');
-    Serial.print(String(Gz));
+    Serial.print(Qy, 4);
     Serial.print(',');
-    Serial.print(String(Mx));
-    Serial.print(',');
-    Serial.print(String(My));
-    Serial.print(',');
-    Serial.print(String(Mz));
-    Serial.print(',');
-    //Serial.println();
-  
-  
-    Serial.print(quat.w(), 4);
-    //Serial.print(String(qw));
-    Serial.print(',');
-    Serial.print(quat.x(), 4);
-    //Serial.print(String(qx));
-    Serial.print(',');
-    Serial.print(quat.y(), 4);
-    //Serial.print(String(qy));
-    Serial.print(',');
-    Serial.print(quat.z(), 4);
-    //Serial.print(String(qz));
+    Serial.print(Qz, 4);
     Serial.println();
-  
     }
 
   else {
     digitalWrite(LED, LOW);
     }
   
-
-
   delay(10);
 }

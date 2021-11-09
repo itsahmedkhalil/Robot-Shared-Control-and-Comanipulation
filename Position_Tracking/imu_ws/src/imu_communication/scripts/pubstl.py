@@ -32,6 +32,8 @@ def runLoop():
     vel = [0, 0 , 0]
     dist = [0, 0, 0]
     rawDataList = []
+    damp = 1000
+    r_acc_last = [0, 0, 0]
 
     # Initialize the publisher for the marker
     marker_pub = rospy.Publisher("/visualization_marker", Marker, queue_size = 2)
@@ -85,7 +87,7 @@ def runLoop():
             if decoded_bytes[0] != 'C':
                 rawData = [float(x) for x in decoded_bytes.split(",")]
                 acc = np.array(rawData[0:3])
-                quat = rawData[9:]
+                quat = rawData[3:]
             
             r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
             r_acc = r.apply(acc)
@@ -93,26 +95,22 @@ def runLoop():
             r_acc = r_acc - np.array([0, 0, 9.81])
             for i in range(len(r_acc)):
                 if abs(r_acc[i]) < 0.1:
-                    r_acc[i] = 0
-                
-            for i in range(len(r_acc)):
-                if (r_acc[i]) == 0:
-                    vel[i] = 0
-    
+                    vel[i] = (1/damp)*(r_acc_last[i] - r_acc[i])
+
             vel = vel + r_acc*dt
             dist = (dist + vel*dt)
-        
+            r_acc_last = r_acc
         
             translation=(dist[0]*10, dist[1]*10, 0)
             rotation = (quat[1], quat[2], quat[3], quat[0])
 
 
             #marker distance between imu and marker
-            delta_distX = dist[0] - marker.pose.position.x
-            delta_distY = dist[1] - marker.pose.position.y
+            delta_distX = abs(dist[0]*10 - marker.pose.position.x)
+            delta_distY = abs(dist[1]*10 - marker.pose.position.y)
             
             #if the distance is cloes to 0, the marker move to a random position
-            if 0<delta_distX < 0.1 and 0<delta_distY < 0.1:
+            if delta_distX < 0.1 and delta_distY < 0.1:
                 counter += 1
                 marker.pose.position.x = random.randint(-2,2)
                 marker.pose.position.y = random.randint(-2,2)
