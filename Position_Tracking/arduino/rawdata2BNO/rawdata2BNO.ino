@@ -4,8 +4,6 @@
 #include <utility/imumaths.h>
 
 float Ax, Ay, Az;
-/*float Gx, Gy, Gz;
-float Mx, My, Mz;*/
 float Qw,Qx,Qy,Qz;
 
 /* This driver reads raw data from the BNO055
