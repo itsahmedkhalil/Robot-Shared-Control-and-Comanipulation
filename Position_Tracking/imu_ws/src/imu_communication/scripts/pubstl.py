@@ -76,7 +76,7 @@ def runLoop():
     # noise_acc = [np.sum(rawDataDF['accx'])/np.size(rawDataDF['accx']),np.sum(rawDataDF['accy'])/np.size(rawDataDF['accy']),np.sum(rawDataDF['accz'])/np.size(rawDataDF['accz'])]
     vel = np.zeros(3)
     dist = np.zeros(3)  
-    dt = 0.01
+    dt = 0.01 #need to be changed from Arduino
     print("Calibrated")
     counter = 0
     while not rospy.is_shutdown():
