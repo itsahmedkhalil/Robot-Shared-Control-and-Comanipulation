@@ -63,25 +63,34 @@ def runLoop():
     marker.color.a = 1.0
 
 
+    #w = tk.Tk()
     print("Calibration Started")
-    # for i in range(100):
-    #     ser_bytes = ser.readline() 
-    #     decoded_bytes = str(ser_bytes.decode("ascii"))
-    #     if decoded_bytes[0] != 'C':
-    #         rawData = [float(x) for x in decoded_bytes.split(",")]
-    #         rawDataList.append(rawData)
-    #         i+=1
-    #     pass
-    # rawDataDF = pd.DataFrame(rawDataList, columns =['accx','accy', 'accz','gyrx', 'gyry','gyrz', 'magx','magy', 'magz', 'qW', 'qX', 'qY', 'qZ']) 
-    # noise_acc = [np.sum(rawDataDF['accx'])/np.size(rawDataDF['accx']),np.sum(rawDataDF['accy'])/np.size(rawDataDF['accy']),np.sum(rawDataDF['accz'])/np.size(rawDataDF['accz'])]
+    for i in range(100):
+         ser_bytes = ser.readline() 
+         decoded_bytes = str(ser_bytes.decode("ascii"))
+         if decoded_bytes[0] != 'C':
+            rawData = [float(x) for x in decoded_bytes.split(",")]
+            #rawDataList.append(rawData)
+            acc_init = np.array(rawData[0:3])
+            quat_init = rawData[3:]
+            r_init = R.from_quat([quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
+            cal_acc = r_init.apply(acc_init)
+            calibratedData.append(cal_acc[2])
+            i+=1
+         pass
+    gravityDF = pd.DataFrame(calibratedData, columns =['accz']) 
+    g = np.sum(gravityDF['accz'])/np.size(gravityDF['accz'])
+    print(g)
     vel = np.zeros(3)
     dist = np.zeros(3)  
-    dt = 0.01 #need to be changed from Arduino
+    #dt = 0.01 #need to be changed from Arduino
     print("Calibrated")
     counter = 0
+    t_old = float(time())
     while not rospy.is_shutdown():
         try:
             t = float(time())
+            #print(t)
             ser_bytes = ser.readline()  
             decoded_bytes = str(ser_bytes.decode("ascii"))
             if decoded_bytes[0] != 'C':
@@ -91,29 +100,31 @@ def runLoop():
             
             r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
             r_acc = r.apply(acc)
-
-            r_acc = r_acc - np.array([0, 0, 9.81])
+            
+            r_acc = r_acc - np.array([0, 0, g])
             for i in range(len(r_acc)):
                 if abs(r_acc[i]) < 0.1:
                     vel[i] = (1/damp)*(r_acc_last[i] - r_acc[i])
 
+            dt = t - t_old
+            
             vel = vel + r_acc*dt
             dist = (dist + vel*dt)
             r_acc_last = r_acc
         
-            translation=(dist[0]*10, dist[1]*10, 0)
+            translation=(dist[0], dist[1], 0)
             rotation = (quat[1], quat[2], quat[3], quat[0])
 
 
             #marker distance between imu and marker
-            delta_distX = abs(dist[0]*10 - marker.pose.position.x)
-            delta_distY = abs(dist[1]*10 - marker.pose.position.y)
+            delta_distX = abs(dist[0] - marker.pose.position.x)
+            delta_distY = abs(dist[1] - marker.pose.position.y)
             
             #if the distance is cloes to 0, the marker move to a random position
-            if delta_distX < 0.1 and delta_distY < 0.1:
+            if delta_distX < 0.05 and delta_distY < 0.05:
                 counter += 1
-                marker.pose.position.x = random.randint(-2,2)
-                marker.pose.position.y = random.randint(-2,2)
+                marker.pose.position.x = float(random.randint(-10, 10))/10
+                marker.pose.position.y = float(random.randint(-10,10))/10
                 print("new marker position:", marker.pose.position.x, marker.pose.position.y)
                 marker.pose.position.z = 0
                 print("you got number of points! :", counter)
@@ -124,8 +135,9 @@ def runLoop():
             #rospy.loginfo(np.linalg.norm(r_acc))
             b.sendTransform(translation, rotation, Time.now(), 'arduino', '/world')
             #rospy.loginfo(marker)
-            
+            t_old = t
         except Exception as e:
+            #t = float(time())
             print(e)
             pass
         rate.sleep()
