@@ -98,7 +98,7 @@ void loop(void)
   Serial.print(" Mag=");
   Serial.println(mag, DEC);
 
-  if (accel == 3 && system > 0){
+  if (accel == 3 && mag == 3){
     digitalWrite(LED, HIGH);
   
     /* Display the floating point data */
