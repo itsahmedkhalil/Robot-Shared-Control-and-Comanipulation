@@ -4,7 +4,7 @@
 #include <utility/imumaths.h>
 
 float Ax, Ay, Az;
-float Qw, Qx, Qy, Qz;
+float Qw,Qx,Qy,Qz;
 
 /* This driver reads raw data from the BNO055
 
@@ -14,10 +14,10 @@ float Qw, Qx, Qy, Qz;
    Connect SDA to analog 4
    Connect VDD to 3.3V DC
    Connect GROUND to common ground
-
+   
 */
 
-int LED = 9; // led light at pin 9
+int LED =9; // led light at pin 9
 const int BUTTON = 4; // Naming switch button pin
 int BUTTONstate = 0; // A variable to store Button Status / Input
 
@@ -40,11 +40,11 @@ void setup(void)
   Serial.begin(115200);
   pinMode (BUTTON, INPUT);
   /* Initialise the sensor */
-  if (!bno.begin())
+  if(!bno.begin())
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-    while (1);
+    while(1);
   }
 
 }
@@ -65,42 +65,42 @@ void loop(void)
   // - VECTOR_LINEARACCEL   - m/s^2
   // - VECTOR_GRAVITY       - m/s^2
 
-  //  BUTTONstate = digitalRead(BUTTON);  // Reading button status / input
-  //
-  //
-  //
-  //  if (BUTTONstate == HIGH) {
-  //    Ax = 0;
-  //    Ay = 0;
-  //    Az = 0;
-  //  }
-  //  else {
-  imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  imu::Quaternion quat = bno.getQuat();
-  Ax = acc.x();
-  Ay = acc.y();
-  Az = acc.z();
-  Qx = quat.x();
-  Qy = quat.y();
-  Qz = quat.z();
-  Qw = quat.w();
-  //  }
+  BUTTONstate = digitalRead(BUTTON);  // Reading button status / input
 
-  /* Display calibration status for each sensor. */
+  
+  
+  if (BUTTONstate == HIGH) {    
+    Ax = 0;
+    Ay = 0;
+    Az = 0;  
+  }
+  else {
+    imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+    imu::Quaternion quat = bno.getQuat();
+    Ax = acc.x();
+    Ay = acc.y();
+    Az = acc.z();
+    Qx = quat.x();
+    Qy = quat.y();
+    Qz = quat.z();
+    Qw = quat.w();
+  }
+
+   /* Display calibration status for each sensor. */
   uint8_t system, gyro, accel, mag = 0;
   bno.getCalibration(&system, &gyro, &accel, &mag);
-  //  Serial.print("CALIBRATION: Sys=");
-  //  Serial.print(system, DEC);
-  //  Serial.print(" Gyro=");
-  //  Serial.print(gyro, DEC);
-  //  Serial.print(" Accel=");
-  //  Serial.print(accel, DEC);
-  //  Serial.print(" Mag=");
-  //  Serial.println(mag, DEC);
+  Serial.print("CALIBRATION: Sys=");
+  Serial.print(system, DEC);
+  Serial.print(" Gyro=");
+  Serial.print(gyro, DEC);
+  Serial.print(" Accel=");
+  Serial.print(accel, DEC);
+  Serial.print(" Mag=");
+  Serial.println(mag, DEC);
 
-  if (accel == 3 && mag == 3) {
-    //digitalWrite(LED, HIGH);
-
+  if (accel == 3 && mag == 3){
+    digitalWrite(LED, HIGH);
+  
     /* Display the floating point data */
     Serial.print(Ax);
     Serial.print(',');
@@ -116,19 +116,11 @@ void loop(void)
     Serial.print(',');
     Serial.print(Qz, 4);
     Serial.println();
-  }
+    }
 
   else {
-    //digitalWrite(LED, LOW);
-    Serial.print("CALIBRATION: Sys=");
-    Serial.print(system, DEC);
-    Serial.print(" Gyro=");
-    Serial.print(gyro, DEC);
-    Serial.print(" Accel=");
-    Serial.print(accel, DEC);
-    Serial.print(" Mag=");
-    Serial.println(mag, DEC);
-  }
-
+    digitalWrite(LED, LOW);
+    }
+  
   delay(10);
 }

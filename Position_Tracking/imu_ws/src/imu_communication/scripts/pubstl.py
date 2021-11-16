@@ -65,30 +65,33 @@ def runLoop():
 
     #w = tk.Tk()
     print("Calibration Started")
-    for i in range(200):
-         ser_bytes = ser.readline() 
-         decoded_bytes = str(ser_bytes.decode("ascii"))
-         if decoded_bytes[0] != 'C':
-            rawData = [float(x) for x in decoded_bytes.split(",")]
-            #rawDataList.append(rawData)
-            acc_init = np.array(rawData[0:3])
-            quat_init = rawData[3:]
-            r_init = R.from_quat([quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
-            cal_acc = r_init.apply(acc_init)
-            calibratedData.append(cal_acc)
-            i+=1
-         pass
-    np_calibratedData = np.array(calibratedData)
-    #gravityDF = pd.DataFrame(calibratedData, columns =['accx','accy','accz']) 
-    #print(gravityDF)
-    #g = np.sum((gravityDF['accX']**2 + gravityDF['accY']**2 +gravityDF['accZ']**2)**0.5)/np.size(gravityDF['accz'])
-    g = np.sum(np.linalg.norm(np_calibratedData, axis=1)/np.shape(np_calibratedData)[0])
+    try:
+        for i in range(200):
+            ser_bytes = ser.readline() 
+            decoded_bytes = str(ser_bytes.decode("ascii"))
+            if decoded_bytes[0] != 'C':
+                rawData = [float(x) for x in decoded_bytes.split(",")]
+                #rawDataList.append(rawData)
+                acc_init = np.array(rawData[0:3])
+                quat_init = rawData[3:]
+                r_init = R.from_quat([quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
+                cal_acc = r_init.apply(acc_init)
+                calibratedData.append(cal_acc)
+                i+=1
+            pass
+        np_calibratedData = np.array(calibratedData)
+        #gravityDF = pd.DataFrame(calibratedData, columns =['accx','accy','accz']) 
+        #print(gravityDF)
+        #g = np.sum((gravityDF['accX']**2 + gravityDF['accY']**2 +gravityDF['accZ']**2)**0.5)/np.size(gravityDF['accz'])
+        g = np.sum(np.linalg.norm(np_calibratedData, axis=1)/np.shape(np_calibratedData)[0])
+        print("Calibration Completed")
+    except:
+        print("Calibration Failed")
+        g = 9.81
     print("Gravity: ", g)
-    print("Calibration Finished")
+
     vel = np.zeros(3)
     dist = np.zeros(3)  
-    #dt = 0.01 #need to be changed from Arduino
-    print("Calibrated")
     counter = 0
     x_n = 0
     x_n_1 = 0
@@ -110,18 +113,17 @@ def runLoop():
             r_acc = r.apply(acc)
             
             r_acc = r_acc - np.array([0, 0, g])
-            
+
             dt = t - t_old
 
             for i in range(len(r_acc)):
                 x_n = (2*x_n_1 - x_n_2 + damp*x_n_1*dt+r_acc*dt*dt)/(damp*dt+1)
 
             
-            
             # vel = vel + r_acc*dt
             # dist = (dist + vel*dt)
             # r_acc_last = r_acc
-            print(np.linalg.norm(r_acc))
+            #print(np.linalg.norm(r_acc))
             #print(x_n[0], x_n[1], x_n[2])
             translation=(x_n[0], x_n[1], x_n[2])
             rotation = (quat[1], quat[2], quat[3], quat[0])
