@@ -11,7 +11,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 calibratedData = []
-def getGarvity():
+def getGravity():
     try:
         for i in range(200):
             ser_bytes = ser.readline() 
@@ -88,6 +88,6 @@ class DynamicPlotter():
 
 if __name__ == '__main__':
     ser = serial.Serial('/dev/ttyACM0', timeout=1)
-    g = getGarvity()
+    g = getGravity()
     m = DynamicPlotter(sampleinterval=0.01, timewindow=10.)
     m.run()
