@@ -89,16 +89,9 @@ void loop(void)
    /* Display calibration status for each sensor. */
   uint8_t system, gyro, accel, mag = 0;
   bno.getCalibration(&system, &gyro, &accel, &mag);
-  Serial.print("CALIBRATION: Sys=");
-  Serial.print(system, DEC);
-  Serial.print(" Gyro=");
-  Serial.print(gyro, DEC);
-  Serial.print(" Accel=");
-  Serial.print(accel, DEC);
-  Serial.print(" Mag=");
-  Serial.println(mag, DEC);
 
-  if (accel == 3 && mag == 3){
+
+  if (accel == 3 && mag == 3 && gyro == 3){
     digitalWrite(LED, HIGH);
   
     /* Display the floating point data */
@@ -120,6 +113,14 @@ void loop(void)
 
   else {
     digitalWrite(LED, LOW);
+    Serial.print("CALIBRATION: Sys=");
+    Serial.print(system, DEC);
+    Serial.print(" Gyro=");
+    Serial.print(gyro, DEC);
+    Serial.print(" Accel=");
+    Serial.print(accel, DEC);
+    Serial.print(" Mag=");
+    Serial.println(mag, DEC);
     }
   
   delay(10);
