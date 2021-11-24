@@ -32,7 +32,7 @@ def runLoop():
     vel = [0, 0 , 0]
     dist = [0, 0, 0]
     rawDataList = []
-    damp = 1    
+    damp = 0.5    
     r_acc_last = [0, 0, 0]
 
     # Initialize the publisher for the marker
@@ -108,16 +108,31 @@ def runLoop():
                 rawData = [float(x) for x in decoded_bytes.split(",")]
                 acc = np.array(rawData[0:3])
                 quat = rawData[3:]
-            
-            r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
-            r_acc = r.apply(acc)
-            
-            r_acc = r_acc - np.array([0, 0, g])
+            is_all_zero = not np.any(acc)
+            if is_all_zero:
+                r_acc = np.array([0,0,0])
+            else:
+                r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
+                r_acc = r.apply(acc)
+                
+                r_acc = r_acc - np.array([0, 0, g])
 
             dt = t - t_old
-
             for i in range(len(r_acc)):
-                x_n = (2*x_n_1 - x_n_2 + damp*x_n_1*dt+r_acc*dt*dt)/(damp*dt+1)
+                if abs(r_acc[i]) < 0.02:
+                    damp = 2
+            vel = (vel + r_acc*dt)/(1+damp*dt)
+            for v in range(len(vel)):
+                if abs(vel[v]) < 0.075:
+                    vel[v] = 0
+                    damp = 2
+                else:
+                    damp = 0.2
+
+            x_n = x_n_1 + dt*vel
+            
+            #for i in range(len(r_acc)):
+                #x_n = (2*x_n_1 - x_n_2 + damp*x_n_1*dt+r_acc*dt*dt)/(damp*dt+1)
 
             
             # vel = vel + r_acc*dt
@@ -125,7 +140,7 @@ def runLoop():
             # r_acc_last = r_acc
             #print(np.linalg.norm(r_acc))
             #print(x_n[0], x_n[1], x_n[2])
-            translation=(x_n[0], x_n[1], x_n[2])
+            translation=(x_n[0], x_n[1], 0)#x_n[2])
             rotation = (quat[1], quat[2], quat[3], quat[0])
 
 
@@ -134,7 +149,7 @@ def runLoop():
             delta_distY = abs(dist[1] - marker.pose.position.y)
             
             #if the distance is cloes to 0, the marker move to a random position
-            if delta_distX < 0.05 and delta_distY < 0.05:
+            if delta_distX < 0.1 and delta_distY < 0.1:
                 counter += 1
                 marker.pose.position.x = float(random.randint(-10, 10))/10
                 marker.pose.position.y = float(random.randint(-10,10))/10
