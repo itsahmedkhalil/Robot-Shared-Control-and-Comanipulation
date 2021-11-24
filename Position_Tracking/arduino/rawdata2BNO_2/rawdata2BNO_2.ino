@@ -91,7 +91,7 @@ void loop(void)
   bno.getCalibration(&system, &gyro, &accel, &mag);
 
 
-  if (accel == 3 && mag == 3 && gyro == 3){
+  if (accel == 3 && gyro == 3 && mag ==3){
     digitalWrite(LED, HIGH);
   
     /* Display the floating point data */
