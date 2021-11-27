@@ -20,11 +20,14 @@ import random
 # Your serial port might be different!
 
 def runLoop():
-    ser = serial.Serial('/dev/ttyACM0', timeout=1)
+    ser = serial.Serial()
+    ser.baudrate = 115200
+    ser.port = '/dev/ttyUSB0'
+    ser.open()
     b = TransformBroadcaster()
     translation = (0.0, 0.0, 0.0)
     rotation = (0.0, 0.0, 0.0, 1.0)
-    rate = rospy.Rate(100) # 
+    rate = rospy.Rate(500) # 
 
     calibratedData = []
     rawDataList = []
@@ -66,12 +69,11 @@ def runLoop():
     #w = tk.Tk()
     print("Calibration Started")
     try:
-        for i in range(200):
+        for i in range(400):
             ser_bytes = ser.readline() 
             decoded_bytes = str(ser_bytes.decode("ascii"))
             if decoded_bytes[0] != 'C':
                 rawData = [float(x) for x in decoded_bytes.split(",")]
-                #rawDataList.append(rawData)
                 acc_init = np.array(rawData[0:3])
                 quat_init = rawData[3:]
                 r_init = R.from_quat([quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
@@ -80,13 +82,11 @@ def runLoop():
                 i+=1
             pass
         np_calibratedData = np.array(calibratedData)
-        #gravityDF = pd.DataFrame(calibratedData, columns =['accx','accy','accz']) 
-        #print(gravityDF)
-        #g = np.sum((gravityDF['accX']**2 + gravityDF['accY']**2 +gravityDF['accZ']**2)**0.5)/np.size(gravityDF['accz'])
+
         g = np.sum(np.linalg.norm(np_calibratedData, axis=1)/np.shape(np_calibratedData)[0])
         print("Calibration Completed")
-    except:
-        print("Calibration Failed")
+    except Exception as e:
+        print(e)
         g = 9.81
     print("Gravity: ", g)
 
@@ -101,7 +101,6 @@ def runLoop():
     while not rospy.is_shutdown():
         try:
             t = float(time())
-            #print(t)
             ser_bytes = ser.readline()  
             decoded_bytes = str(ser_bytes.decode("ascii"))
             if decoded_bytes[0] != 'C':
@@ -119,15 +118,15 @@ def runLoop():
 
             dt = t - t_old
             for i in range(len(r_acc)):
-                if abs(r_acc[i]) < 0.02:
-                    damp = 2
+                if abs(r_acc[i]) < 0.2:
+                    damp = 200
+                else:
+                    damp = 1
             vel = (vel + r_acc*dt)/(1+damp*dt)
             for v in range(len(vel)):
-                if abs(vel[v]) < 0.075:
+                if abs(vel[v]) < 0.05:
                     vel[v] = 0
-                    damp = 2
-                else:
-                    damp = 0.2
+                
 
             x_n = x_n_1 + dt*vel
             
@@ -168,8 +167,7 @@ def runLoop():
             x_n_1 = x_n
         except Exception as e:
             #t = float(time())
-            #print(e)
-            pass
+            print(e)
         rate.sleep()
 
 if __name__ == '__main__':

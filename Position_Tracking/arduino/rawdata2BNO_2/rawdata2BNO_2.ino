@@ -17,7 +17,6 @@ float Qw,Qx,Qy,Qz;
    
 */
 
-int LED =9; // led light at pin 9
 const int BUTTON = 4; // Naming switch button pin
 int BUTTONstate = 0; // A variable to store Button Status / Input
 
@@ -35,8 +34,6 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28);
 /**************************************************************************/
 void setup(void)
 {
-
-  pinMode(LED, OUTPUT);
   Serial.begin(115200);
   pinMode (BUTTON, INPUT);
   /* Initialise the sensor */
@@ -92,7 +89,6 @@ void loop(void)
 
 
   if (accel == 3 && gyro == 3 && mag ==3){
-    digitalWrite(LED, HIGH);
   
     /* Display the floating point data */
     Serial.print(Ax);
@@ -112,9 +108,8 @@ void loop(void)
     }
 
   else {
-    digitalWrite(LED, LOW);
     Serial.print("CALIBRATION: Sys=");
-    Serial.print(system, DEC);
+    Serial.print(system, DEC);    
     Serial.print(" Gyro=");
     Serial.print(gyro, DEC);
     Serial.print(" Accel=");

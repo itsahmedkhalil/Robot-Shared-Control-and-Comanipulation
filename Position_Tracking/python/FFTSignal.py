@@ -8,7 +8,10 @@ import matplotlib.pyplot as plt
 import scipy.fftpack
 
 # Your serial port might be different!
-ser = serial.Serial('/dev/ttyACM0', timeout=1) #Change serial port
+ser = serial.Serial()
+ser.baudrate = 115200
+ser.port = '/dev/ttyUSB0'
+ser.open()
 calibratedData = []
 def getGravity():
     try:

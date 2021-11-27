@@ -16,7 +16,9 @@ def getGravity():
         for i in range(200):
             ser_bytes = ser.readline() 
             decoded_bytes = str(ser_bytes.decode("ascii"))
+            len(decoded_bytes)
             if decoded_bytes[0] != 'C':
+                len(decoded_bytes)
                 rawData = [float(x) for x in decoded_bytes.split(",")]
                 #rawDataList.append(rawData)
                 acc_init = np.array(rawData[0:3])
@@ -111,6 +113,7 @@ class DynamicPlotter():
         frequency = 0.5
         ser_bytes = ser.readline()  
         decoded_bytes = str(ser_bytes.decode("ascii"))
+        
         if decoded_bytes[0] != 'C':
             rawData = [float(x) for x in decoded_bytes.split(",")]
             acc = np.array(rawData[0:3])
@@ -178,11 +181,11 @@ class DynamicPlotter():
         self.app.exec_()
 
 if __name__ == '__main__':
-    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+    ser = serial.Serial()
+    ser.baudrate = 115200
+    ser.port = '/dev/ttyUSB0'
+    ser.open()
     g = getGravity()
     print("gravity:",g)
     m = DynamicPlotter(sampleinterval=0.01, timewindow=2.)
     m.run()
-
-
-
