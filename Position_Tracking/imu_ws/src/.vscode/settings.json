@@ -1,7 +1,0 @@
-{
-    "ros.distro": "noetic",
-    "python.autoComplete.extraPaths": [
-        "/home/ahmed/Desktop/research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_ws/devel/lib/python3/dist-packages",
-        "/opt/ros/noetic/lib/python3/dist-packages"
-    ]
-}

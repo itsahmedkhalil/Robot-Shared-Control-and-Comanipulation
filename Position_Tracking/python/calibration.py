@@ -2,11 +2,9 @@ import csv
 from time import time
 import serial
 import numpy as np
+from numpy import linalg as LA
 import os
 from pathlib import Path
-
-
-
 
 x_pos = [1., 0., 0.]
 x_neg = [-1., 0., 0.]
@@ -18,7 +16,6 @@ z_neg = [0., 0., -1.]
 A = []
 for i in range(1000):
     A.append(x_pos)
-
 for i in range(1000):
     A.append(x_neg)
 for i in range(1000):
@@ -30,22 +27,21 @@ for i in range(1000):
 for i in range(1000):
     A.append(z_neg)
 
-dir = str(os.path.abspath(os.curdir))[:-6]
+dir = str(os.path.abspath(os.curdir))#[:-8]
+print(dir)
 
-files = ["bnoData/posX.csv", "bnoData/negX.csv", "bnoData/posY.csv", "bnoData/negY.csv", "bnoData/posZ.csv", "bnoData/negZ.csv"]
+files = ["/lpmsData/posX.csv", "lpmsData/negX.csv", "lpmsData/posY.csv", "lpmsData/negY.csv", "lpmsData/posZ.csv", "lpmsData/negZ.csv"]
 
-fil_path = [dir + s for s in files]
+fil_path = [dir + "/" + s for s in files]
 B = []
 
-for f in fil_path:
-    
+for f in fil_path:    
     #with open(file, 'r') as csvfile:
     file = open(f,"r")
     reader = csv.reader(file)
-    for row in reader:
-        #row.append(1.)
-        
+    for row in reader:        
         B.append(row)
+print(len(B))
 
 def least_squares_fit(A, B):
     """Does least squares fit to find x of Ax = B.  Returns best guess of original distortion
@@ -71,11 +67,17 @@ f = np.array([[0.99,-0.02,-0.08]])
 f = f.reshape(3,1)
 b_a = least_squares_fit(A, B)[0][:3,3] #offset
 M = least_squares_fit(A, B)[0][:3, :3] #sensitivity matrix
+#Mi = np.linalg.inv(M)
 
+
+print(b_a)
 print(M)
-
-# # Your serial port might be different!
+# # Your serial port might be diffrent!
 # ser = serial.Serial('/dev/ttyACM0', timeout=1) #Change serial port
+f_hat = np.linalg.inv(M) * (np.array(f) - b_a)
+#print(f_hat)
+f_hat = f_hat.reshape(3)
+f_hat = np.asarray(f_hat)
 
 # f = open("noise_test_NANO.csv", "a+")
 # writer = csv.writer(f, delimiter=',')

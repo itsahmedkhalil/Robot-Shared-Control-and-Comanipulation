@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -52,6 +53,7 @@ add_message_files(
   FILES
   Num.msg
   state.msg
+  Imu.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -72,6 +74,7 @@ add_message_files(
  generate_messages(
    DEPENDENCIES
    std_msgs
+   geometry_msgs
  )
 
 ################################################
@@ -106,7 +109,7 @@ add_message_files(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES imu_communication
-  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime geometry_msgs
 #  DEPENDS system_lib
 )
 
@@ -161,7 +164,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
-   scripts/pub.py scripts/sub.py scripts/pubstl.py scripts/keyboard.py scripts/state.py
+   scripts/pub.py scripts/sub.py scripts/pubstl.py scripts/keyboard.py scripts/state.py scripts/imudata.py scripts/rviz.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
