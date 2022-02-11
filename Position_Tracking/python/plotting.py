@@ -8,26 +8,105 @@ import math
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
+from tf import TransformBroadcaster
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from rospy import Time
+from scipy.spatial.transform import Rotation as R
+import random
+import sys
+sys.path.append('/home/ahmedkhalil/openzen')
+import openzen
+
+openzen.set_log_level(openzen.ZenLogLevel.Warning)
+
+error, client = openzen.make_client()
+if not error == openzen.ZenError.NoError:
+    print("Error while initializing OpenZen library")
+    sys.exit(1)
+
+error = client.list_sensors_async()
+
+# check for events
+sensor_desc_connect = None
+while True:
+    zenEvent = client.wait_for_next_event()
+
+    if zenEvent.event_type == openzen.ZenEventType.SensorFound:
+        print("Found sensor {} on IoType {}".format(zenEvent.data.sensor_found.name,
+                                                    zenEvent.data.sensor_found.io_type))
+        if sensor_desc_connect is None:
+            sensor_desc_connect = zenEvent.data.sensor_found
+
+    if zenEvent.event_type == openzen.ZenEventType.SensorListingProgress:
+        lst_data = zenEvent.data.sensor_listing_progress
+        print("Sensor listing progress: {} %".format(lst_data.progress * 100))
+        if lst_data.complete > 0:
+            break
+print("Sensor Listing complete")
+
+if sensor_desc_connect is None:
+    print("No sensors found")
+    sys.exit(1)
+# connect to the first sensor found
+error, sensor = client.obtain_sensor(sensor_desc_connect)
+
+# or connect to a sensor by name
+#error, sensor = client.obtain_sensor_by_name("LinuxDevice", "LPMSCU2000003")
+
+if not error == openzen.ZenSensorInitError.NoError:
+    print("Error connecting to sensor")
+    sys.exit(1)
+
+print("Connected to sensor !")
+
+imu = sensor.get_any_component_of_type(openzen.component_type_imu)
+if imu is None:
+    print("No IMU found")
+    sys.exit(1)
+
+# read bool property
+error, is_streaming = imu.get_bool_property(openzen.ZenImuProperty.StreamData)
+if not error == openzen.ZenError.NoError:
+    print("Can't load streaming settings")
+    sys.exit(1)
+
+    print("Sensor is streaming data: {}".format(is_streaming))
+
+
 calibratedData = []
 def getGravity():
     try:
-        for i in range(200):
-            ser_bytes = ser.readline() 
-            decoded_bytes = str(ser_bytes.decode("ascii"))
-            if decoded_bytes[0] != 'C':
-                rawData = [float(x) for x in decoded_bytes.split(",")]
-                #rawDataList.append(rawData)
-                acc_init = np.array(rawData[0:3])
-                quat_init = rawData[3:]
-                r_init = R.from_quat([quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
+        for i in range(400):
+            zenEvent = client.wait_for_next_event()
+
+            # check if its an IMU sample event and if it
+            # comes from our IMU and sensor component
+            if zenEvent.event_type == openzen.ZenEventType.ImuData and \
+                    zenEvent.sensor == imu.sensor and \
+                    zenEvent.component.handle == imu.component.handle:
+
+                imu_data = zenEvent.data.imu_data
+                acc_init = np.array(imu_data.a)
+                quat_init = imu_data.q
+                r_init = R.from_quat(
+                    [quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
                 cal_acc = r_init.apply(acc_init)
-                calibratedData.append(cal_acc)
-                i+=1
+                calibratedData.append(cal_acc)  # cal_acc)
+                i += 1
             pass
         np_calibratedData = np.array(calibratedData)
-        g = np.sum(np.linalg.norm(np_calibratedData, axis=1)/np.shape(np_calibratedData)[0])
-    except:
-        g=9.81
+        x_offset = 0  # np.mean(np_calibratedData[:, 0])
+        y_offset = 0  # np.mean(np_calibratedData[:, 1])
+        z_offset = 0  # np.mean(np_calibratedData[:, 2])
+        g = np.sum(np.linalg.norm(np_calibratedData, axis=1) /
+                   np.shape(np_calibratedData)[0])
+        print("Calibration Completed", g)
+    except Exception as e:
+        print(e)
+        g = 9.81
+        print("Calibration Failed", g)
     return g
 class DynamicPlotter():
     def __init__(self, sampleinterval=0.1, timewindow=10., size=(600,350)):
@@ -102,28 +181,36 @@ class DynamicPlotter():
 
 
     def getdata(self):
-        t = float(time())
-        frequency = 0.5
-        ser_bytes = ser.readline()  
-        decoded_bytes = str(ser_bytes.decode("ascii"))
-        if decoded_bytes[0] != 'C':
-            rawData = [float(x) for x in decoded_bytes.split(",")]
-            acc = np.array(rawData[0:3])
-            quat = rawData[3:]
-            print("real:",acc)
+        try:
+            zenEvent = client.wait_for_next_event()
 
-        r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
-        r_acc = r.apply(acc)
+            # check if its an IMU sample event and if it
+            # comes from our IMU and sensor component
+            if zenEvent.event_type == openzen.ZenEventType.ImuData and \
+                    zenEvent.sensor == imu.sensor and \
+                    zenEvent.component.handle == imu.component.handle:
 
-        r_acc = r_acc - np.array([0, 0, g])
-        self.dt = t - self.t_old
-        for i in range(len(r_acc)):
-                x_n = (2*self.x_n_1 - self.x_n_2 + self.damp*self.x_n_1*self.dt+r_acc*self.dt*self.dt)/(self.damp*self.dt+1)
+                imu_data = zenEvent.data.imu_data
+            t = float(time())
 
-        self.t_old = t
-        self.x_n_2 = self.x_n_1
-        self.x_n_1 = x_n
-        return acc,r_acc,x_n
+            acc = np.array(imu_data.a)
+            quat = imu_data.q
+            print(quat)
+            r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
+            r_acc = r.apply(acc)
+            r_acc = r_acc 
+            
+            self.dt = t - self.t_old
+            for i in range(len(r_acc)):
+                    x_n = (2*self.x_n_1 - self.x_n_2 + self.damp*self.x_n_1*self.dt+r_acc*self.dt*self.dt)/(self.damp*self.dt+1)
+
+            self.t_old = t
+            self.x_n_2 = self.x_n_1
+            self.x_n_1 = x_n
+            return acc,r_acc,x_n
+        except Exception as e:
+            #t = float(time())
+            print(e)
 
     def updateplot(self):
         acc = self.getdata()[0]
@@ -162,7 +249,6 @@ class DynamicPlotter():
         self.app.exec_()
 
 if __name__ == '__main__':
-    ser = serial.Serial('/dev/ttyACM0', timeout=1)
     g = getGravity()
     print("gravity:",g)
     m = DynamicPlotter(sampleinterval=0.01, timewindow=10.)

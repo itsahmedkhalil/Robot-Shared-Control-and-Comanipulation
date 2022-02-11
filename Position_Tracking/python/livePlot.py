@@ -220,7 +220,6 @@ class DynamicPlotter():
         self.app.exec_()
 
 if __name__ == '__main__':
-    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
     g = getGravity()
     print("gravity:",g)
     m = DynamicPlotter(sampleinterval=0.01, timewindow=2.)

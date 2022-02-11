@@ -51,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Num.msg
+  state.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -160,7 +161,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
-   scripts/pub.py scripts/sub.py scripts/pubstl.py
+   scripts/pub.py scripts/sub.py scripts/pubstl.py scripts/keyboard.py scripts/state.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

@@ -1,23 +1,22 @@
-#!/usr/bin/env python
-# license removed for brevity
 
 from getch import getch, pause
 import rospy
-from std_msgs.msg import Float64
+from imu_communication.msg import state
 from imu_communication.msg import Num
 from visualization_msgs.msg import Marker
 from time import time
-from geometry_msgs.msg import Accel
+from geometry_msgs.msg import Pose
 from tf import TransformBroadcaster
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from rospy import Time
 from scipy.spatial.transform import Rotation as R
-import random
 import sys
 sys.path.append('/home/ahmedkhalil/openzen')
 import openzen
+
+
 openzen.set_log_level(openzen.ZenLogLevel.Warning)
 error, client = openzen.make_client()
 if not error == openzen.ZenError.NoError:
@@ -73,7 +72,7 @@ if not error == openzen.ZenError.NoError:
     print("Can't load streaming settings")
     sys.exit(1)
 
-    print("Sensor is streaming data: {}".format(is_streaming))
+#print("Sensor is streaming data: {}".format(is_streaming))
 
 
 def runLoop():
@@ -102,9 +101,7 @@ def runLoop():
     # start streaming data
 
     # Your serial port might be different!
-    b = TransformBroadcaster()
-    translation = (0.0, 0.0, 0.0)
-    rotation = (0.0, 0.0, 0.0, 1.0)
+
     rate = rospy.Rate(500)
 
     calibratedData = []
@@ -112,38 +109,9 @@ def runLoop():
 
     damp = 1
 
-    # Initialize the publisher for the marker
-    marker_pub = rospy.Publisher(
-        "/visualization_marker", Marker, queue_size=1)
-    marker = Marker()
-    marker.header.frame_id = "world"
-    marker.pose.orientation.x = 0.0
-    marker.pose.orientation.y = 0.0
-    marker.pose.orientation.z = 0.0
-    marker.pose.orientation.w = 1.0
-
-    # marker initial position
-    marker.pose.position.x = 0
-    marker.pose.position.y = 0
-    marker.pose.position.z = 0
-
-    # set shape, Arrow: 0; Cube: 1 ; Sphere: 2 ; Cylinder: 3
-    marker.type = 1
-    marker.id = 0
-    # Set the scale of the marker
-    marker.scale.x = 0.05
-    marker.scale.y = 0.05
-    marker.scale.z = 0.05
-    # Set the color
-    marker.color.r = 0.0
-    marker.color.g = 1.0
-    marker.color.b = 0.0
-    marker.color.a = 1.0
-
-    #w = tk.Tk()
     print("Calibration Started")
-    acc_publisher = rospy.Publisher('/acc', Accel, queue_size=1)
-    acc_msg = Accel()
+    state_publisher = rospy.Publisher('/state', state, queue_size=1)
+    state_msg = state()
 
     try:
         for i in range(400):
@@ -161,7 +129,7 @@ def runLoop():
                 r_init = R.from_quat(
                     [quat_init[1], quat_init[2], quat_init[3], quat_init[0]])
                 cal_acc = r_init.apply(acc_init)
-                calibratedData.append(cal_acc)  # cal_acc
+                calibratedData.append(cal_acc)  # cal_acc)
                 i += 1
             pass
         np_calibratedData = np.array(calibratedData)
@@ -175,14 +143,13 @@ def runLoop():
     print("Gravity: ", g)
 
     vel = np.zeros(3)
-    counter = 0
     x_n = np.zeros(3)
     x_n_1 = np.zeros(3)
     x_n_2 = np.zeros(3)
     t_old = float(time())
     while not rospy.is_shutdown():
         try:
-            
+            t = float(time())
 
             zenEvent = client.wait_for_next_event()
 
@@ -193,8 +160,7 @@ def runLoop():
                     zenEvent.component.handle == imu.component.handle:
 
                 imu_data = zenEvent.data.imu_data
-
-            t = float(time())
+            
 
             acc = np.array(imu_data.a) 
             quat = imu_data.q
@@ -203,93 +169,22 @@ def runLoop():
             r_acc = r.apply(acc)
             r_acc = (r_acc + np.array([0, 0, 1]))*9.81
  
-            acc_msg.linear.x = acc[0]
-            acc_msg.linear.y = acc[1]
-            acc_msg.linear.z = acc[2]
-            acc_msg.angular.x = r_acc[0]
-            acc_msg.angular.y = r_acc[1]
-            acc_msg.angular.z = r_acc[2]
+         
             dt = t - t_old
-            # print(1/dt)
-            #r_acc_F = 0.22826091*r_acc_F_1 + 0.00307065*r_acc+0.00307065*r_acc_1
-            # for i in range(len(r_acc))    :
-            #     if abs(r_acc[i]) < 0.005:
-            #         r_acc[i] = 0
-            #         damp[i] = damp_high
-            #         #damp = 200
-            #     else:
-            #         damp[i] =  damp_low
-            # if abs(r_acc[0]) < 0.01:
-            #     r_acc[0] = 0
-            #     damp[0] = damp_high
-            # else:
-            #     damp[0] = damp_low
-            # if abs(r_acc[1]) < 0.01:
-            #     r_acc[1] = 0
-            #     damp[1] = damp_high
-            # else:
-            #     damp[1] = damp_low
 
-            """If the median of the last X values of velocity is greater than 0 and very close to 0 
-            then the velocity is clipped between positive
-            velocity values and zero for a specific time period."""
-            """If the median of the last X values of velocity is less than 0 and very close to 0 
-            then the velocity is clipped between negative
-            velocity values and zero for a specific time period.
-            Have to make a scatter plot for velocity values"""
             vel = (vel + r_acc*dt)/(1+damp*dt)
-            # for v in range(len(vel)):
-            #     if abs(vel[v]) < 0.0005:
-            #         # j = 0
-            #         # if j < 600:
-            #         vel[v] = 0
-            #            # j += 1
-            #     else:
-            #         vel[v] = (vel[v] + r_acc[v]*dt)/(1+damp[v]*dt)
-            # print(r_acc)
-            # print(vel)
-            #x_n = x_n_1 + dt*vel
 
-            # for i in range(len(r_acc)):
             x_n = (2*x_n_1 - x_n_2 + damp*x_n_1*dt+r_acc*dt*dt)/(damp*dt+1)
-
-            # vel = vel + r_acc*dt
-            # dist = (dist + vel*dt)
-            # r_acc_last = r_acc
-            # print(np.linalg.norm(r_acc))
-            #print(x_n[0], x_n[1], x_n[2])
-                #translation = (x_n)
-
-            translation = (-x_n[0],-x_n[1],-x_n[2])  # x_n[2])
-            rotation = (quat[1], quat[2], quat[3], quat[0])
-
-            # marker distance between imu and marker
-            delta_distX = abs(x_n[0] - marker.pose.position.x)
-            #delta_distY = abs(x_n[1] - marker.pose.position.y)
-            #delta_distZ = abs(x_n[2] - marker.pose.position.z)
-
-            # if the distance is cloes to 0, the marker move to a random position
-            if delta_distX < 0.05:  # and delta_distY < 0.15:
-                counter += 1
-                marker.pose.position.x = float(random.randint(-5, 5))/20
-                marker.pose.position.y = 0  # float(random.randint(-10,10))/10
-                print("new marker position:",
-                      marker.pose.position.x, marker.pose.position.y)
-                marker.pose.position.z = 0
-                print("you got number of points! :", counter)
-
-            else:
-                pass
-                       
-            marker_pub.publish(marker)
-            # rospy.loginfo(np.linalg.norm(r_acc))
-            b.sendTransform(translation, rotation,
-                            Time.now(), 'imu', '/world')
-            # rospy.loginfo(marker)
+            
             t_old = t
             x_n_2 = x_n_1
             x_n_1 = x_n
-            acc_publisher.publish(acc_msg)
+    
+            state_msg.position = x_n
+            #state_msg.velocity = vel
+            #state_msg.acceleration = r_acc
+            state_msg.orientation = quat
+            state_publisher.publish(state_msg)
 
         except Exception as e:
             #t = float(time())
