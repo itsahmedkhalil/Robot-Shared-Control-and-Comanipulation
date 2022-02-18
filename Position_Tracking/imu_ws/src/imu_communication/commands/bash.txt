@@ -1,0 +1,3 @@
+function imu () {
+        cd "/home/mohamed/Desktop/Fall_Research/Robot-Shared-Control-and-Comanipulation/Position_Tracking/imu_ws" && source devel/setup.bash && roslaunch imu_communication rviz.launch
+        }

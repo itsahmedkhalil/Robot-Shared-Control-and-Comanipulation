@@ -19,6 +19,8 @@ import sys
 sys.path.append('/home/mohamed/openzen/build')
 #sys.path.append('/home/ahmedkhalil/openzen')
 import openzen
+#sys.path.append("/home/mohamed/imu_ws/devel/opencv_tools/lib/python3.8/site-packages/opencv_tools")
+#from kalman2 import Kalman
 openzen.set_log_level(openzen.ZenLogLevel.Warning)
 error, client = openzen.make_client()
 if not error == openzen.ZenError.NoError:
@@ -181,6 +183,13 @@ def runLoop():
     x_n_1 = np.zeros(3)
     x_n_2 = np.zeros(3)
     t_old = float(time())
+   #traformation matrix from state parameters to measurement domain
+
+    Q = 0.02*np.identity(6) #covariance/error of process
+    #R = 5*np.identity(3) #0.3 covariance/error of measurement
+    x_hat_k = np.array([[0,0,0,0,0,0]]).T # x_t = [T,q,T_dot]
+    P_k = 100*np.identity(6)
+    #kalman = Kalman(R, Q)
     while not rospy.is_shutdown():
         try:
             
@@ -196,21 +205,23 @@ def runLoop():
                 imu_data = zenEvent.data.imu_data
 
             t = float(time())
-
             acc = np.array(imu_data.a) 
             quat = imu_data.q
-            quat[0] = -quat[0]
-            r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
+            #quat = quat.inverse()
+            r = R.from_quat([-quat[1], -quat[2], -quat[3], quat[0]])
             r_acc = r.apply(acc)
             r_acc = (r_acc + np.array([0, 0, 1]))*9.81
  
-            acc_msg.linear.x = acc[0]
-            acc_msg.linear.y = acc[1]
-            acc_msg.linear.z = acc[2]
+
             acc_msg.angular.x = r_acc[0]
             acc_msg.angular.y = r_acc[1]
             acc_msg.angular.z = r_acc[2]
             dt = t - t_old
+            #x_hat_k, P_k = kalman.predict(x_hat_k, P_k, dt)
+           # x_hat_k, P_k = kalman.update(x_hat_k, P_k, r_acc)
+            #acc_msg.linear.x = x_hat_k[0][0]
+            #acc_msg.linear.y = x_hat_k[1][0]
+            #acc_msg.linear.z = x_hat_k[2][0]
             # print(1/dt)
             #r_acc_F = 0.22826091*r_acc_F_1 + 0.00307065*r_acc+0.00307065*r_acc_1
             # for i in range(len(r_acc))    :
@@ -261,8 +272,8 @@ def runLoop():
             #print(x_n[0], x_n[1], x_n[2])
                 #translation = (x_n)
 
-            translation = (-x_n[0],-x_n[1],-x_n[2])  # x_n[2])
-            rotation = (quat[1], quat[2], quat[3], quat[0])
+            translation = (x_n[0],x_n[1],x_n[2])#(-x_n[0],-x_n[1],-x_n[2])  # x_n[2])
+            rotation = (-quat[1], -quat[2], -quat[3], quat[0])
 
             # marker distance between imu and marker
             delta_distX = abs(x_n[0] - marker.pose.position.x)
