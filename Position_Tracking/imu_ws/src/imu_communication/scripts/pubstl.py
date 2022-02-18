@@ -16,7 +16,8 @@ from rospy import Time
 from scipy.spatial.transform import Rotation as R
 import random
 import sys
-sys.path.append('/home/ahmedkhalil/openzen')
+sys.path.append('/home/mohamed/openzen/build')
+#sys.path.append('/home/ahmedkhalil/openzen')
 import openzen
 openzen.set_log_level(openzen.ZenLogLevel.Warning)
 error, client = openzen.make_client()
@@ -251,8 +252,8 @@ def runLoop():
             #x_n = x_n_1 + dt*vel
 
             # for i in range(len(r_acc)):
-            x_n = (2*x_n_1 - x_n_2 + damp*x_n_1*dt+r_acc*dt*dt)/(damp*dt+1)
 
+            x_n = (2*x_n_1 - x_n_2 + damp*x_n_1*dt+r_acc*dt*dt)/(damp*dt+1)
             # vel = vel + r_acc*dt
             # dist = (dist + vel*dt)
             # r_acc_last = r_acc

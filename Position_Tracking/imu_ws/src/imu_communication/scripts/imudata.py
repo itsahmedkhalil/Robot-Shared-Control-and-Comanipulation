@@ -18,9 +18,9 @@ import openzen
 
 
 def main(): 
-    imuPub = rospy.Publisher("/imu_data", Imu, queue_size=1)
+    imuPub = rospy.Publisher("/imu_data", Imu, queue_size=2)
     rospy.init_node("imu_publisher")
-    rate = rospy.Rate(300)
+    rate = rospy.Rate(400)
     imu_raw = Imu()
     imu_raw.linearaccel.x = 0
     imu_raw.linearaccel.y = 0
@@ -99,7 +99,7 @@ def main():
             zenEvent.component.handle == imu.component.handle:
 
             imu_data = zenEvent.data.imu_data
-        acc_init = np.array(imu_data.a)*9.81
+        acc_init = np.array(imu_data.a)
         calibratedData.append(acc_init)
         i+=1
     np_calibratedData = np.array(calibratedData)
@@ -110,6 +110,11 @@ def main():
     dir = os.path.dirname(os.path.realpath(__file__))[:-7] #[:-8]
     M = np.load(dir + 'data' + '/sensitivity.npy')
     b_a = np.load(dir + 'data' + '/offset.npy')
+    Mi = np.linalg.inv(M)
+    b_i =[0.96221395, -0.96221395]
+    a_i =[0.9244278933486572]
+    r_acc_1 = np.zeros(3)
+    r_acc_filt_1 = np.zeros(3)
     #print(M)
     #print(b_a)
     while not rospy.is_shutdown():
@@ -124,36 +129,44 @@ def main():
 
                 imu_data = zenEvent.data.imu_data
             acc = np.array(imu_data.a)
-            acc_r = acc.reshape(3,1)
-            diff =  (acc_r - b_a)
-            acc_hat = np.dot(np.linalg.inv(M),diff)
+            #acc_r = acc.reshape(3,1)
+            #diff =  (acc_r - b_a)
+            #acc_hat = np.dot(Mi,diff)
             #print(acc_hat)
             #print(acc_hat)
-            acc_hat = acc_hat.reshape(3)
+            #acc_hat = acc_hat.reshape(3)
             #print(acc_hat)
-            acc_hat = np.asarray(acc_hat)
+            #acc_hat = np.asarray(acc_hat)
             quat = np.array(imu_data.q)
             r = R.from_quat([quat[1],quat[2],quat[3],-quat[0]])
-            r_acc = r.apply(acc_hat)
-            r_acc = r_acc + np.array([0, 0, g])
+            r_acc = r.apply(acc)
+            r_acc = (r_acc + np.array([0, 0, g]))*9.81
+            r_acc_filt = a_i[0]*r_acc_filt_1 + b_i[0]*r_acc + b_i[1]*r_acc_1
+
             imu_raw.time = rospy.get_time()
-            imu_raw.acceleration.x = acc[0]
-            imu_raw.acceleration.y = acc[1]
-            imu_raw.acceleration.z = acc[2]
-            imu_raw.linearaccel.x = acc_hat[0]
-            imu_raw.linearaccel.y = acc_hat[1]
-            imu_raw.linearaccel.z = acc_hat[2]
+            imu_raw.acceleration.x = r_acc[0]
+            imu_raw.acceleration.y = r_acc[1]
+            imu_raw.acceleration.z = r_acc[2]
+            imu_raw.linearaccel.x = r_acc_filt[0]
+            imu_raw.linearaccel.y = r_acc_filt[1]
+            imu_raw.linearaccel.z = r_acc_filt[2]
             imu_raw.orientation.w = -quat[0]
             imu_raw.orientation.x = quat[1]
             imu_raw.orientation.y = quat[2]
             imu_raw.orientation.z = quat[3]
-            print(acc)
+            
+            #print(acc)
             #imu_raw.stamp = rospy.Time.now()
             imuPub.publish(imu_raw)
+            r_acc_1 = r_acc
+            r_acc_filt_1 = r_acc_filt
         except rospy.ROSInterruptException:
             pass
         rate.sleep()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass
