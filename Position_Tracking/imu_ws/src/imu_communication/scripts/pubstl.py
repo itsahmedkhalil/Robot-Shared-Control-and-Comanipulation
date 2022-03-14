@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # license removed for brevity
 
-from getch import getch, pause
 import rospy
 from std_msgs.msg import Float64
 from imu_communication.msg import Num
@@ -16,8 +15,8 @@ from rospy import Time
 from scipy.spatial.transform import Rotation as R
 import random
 import sys
-sys.path.append('/home/mohamed/openzen/build')
-#sys.path.append('/home/ahmedkhalil/openzen')
+#sys.path.append('/home/mohamed/openzen/build')
+sys.path.append('/home/ahmed/openzen/build')
 import openzen
 #sys.path.append("/home/mohamed/imu_ws/devel/opencv_tools/lib/python3.8/site-packages/opencv_tools")
 #from kalman2 import Kalman
