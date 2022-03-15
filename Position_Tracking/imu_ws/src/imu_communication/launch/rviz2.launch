@@ -5,7 +5,7 @@
     <!-- <node name="publisher_node" pkg="imu_communication" type="pub.py" output="screen"/> -->
     <node name="rviz" type="rviz" pkg="rviz" args="-d $(find imu_communication)/rviz/imu_rviz.rviz"/>
     <!-- <node name="rviz" type="rviz" pkg="rviz"/> -->
-    <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/imu_data/acceleration/x /imu_data/linearaccel/x"/>
+    <!-- <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/imu_data/acceleration/x /imu_data/linearaccel/x"/> -->
     <!-- <node name="rqt_plot1" pkg="rqt_plot" type="rqt_plot" args="/imu_data/acceleration/y /imu_data/linearaccel/y"/>
     <node name="rqt_plot2" pkg="rqt_plot" type="rqt_plot" args="/imu_data/acceleration/z /imu_data/linearaccel/z"/> -->
     <!-- <node pkg="tf" type="static_transform_publisher" -d imu_communication/imu_data.h name="base_link" args="args=1 0 0 0 0 0 1 map base_link 100" /> -->

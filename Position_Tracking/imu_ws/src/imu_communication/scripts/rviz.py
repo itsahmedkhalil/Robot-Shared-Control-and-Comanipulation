@@ -26,7 +26,6 @@ class imu_visualizer:
         self.marker.pose.orientation.y = 0.0
         self.marker.pose.orientation.z = 0.0
         self.marker.pose.orientation.w = 1.0
-        print("hi")
         #marker initial position
         self.marker.pose.position.x = 0
         self.marker.pose.position.y = 0
@@ -36,9 +35,9 @@ class imu_visualizer:
         self.marker.type = 1
         self.marker.id = 0
         # Set the scale of the marker
-        self.marker.scale.x = 0.5
-        self.marker.scale.y = 0.5
-        self.marker.scale.z = 0.5
+        self.marker.scale.x = 0.1
+        self.marker.scale.y = 0.1
+        self.marker.scale.z = 0.1
         # Set the color
         self.marker.color.r = 0.0
         self.marker.color.g = 1.0
@@ -47,7 +46,7 @@ class imu_visualizer:
         self.counter = 0
         
         self.imu = Imu()
-        self.damp = np.array([0.0, 0.0, 0.00])
+        self.damp = np.array([0.0, 0.0, 0.0])
         self.vel = np.zeros(3)
         self.x_n = np.zeros(3)
         self.x_n_1 = np.zeros(3)
@@ -63,26 +62,26 @@ class imu_visualizer:
         self.tr.transform.rotation.w = 1
         
     def callback(self, data):
-        acc = np.array([data.linearaccel.x, data.linearaccel.y, data.linearaccel.z])
+        acc = np.array([data.acceleration.x, data.acceleration.y, data.acceleration.z])
         quat = np.array([data.orientation.x, data.orientation.y, data.orientation.z, data.orientation.w]) 
-        t = data.time   
-        dt = (t - self.t_prev)
-        if abs(acc[0]) < 0.001:
-            acc[0] = 0.0
-        if abs(acc[1]) < 0.001:
-            acc[1] = 0.0
-        if abs(acc[2]) < 0.001:
-            acc[2] = 0.0
-        f = 1/dt
+        dt = data.dt
         self.vel = (self.vel + acc*dt)/(1+self.damp*dt)
-        self.x_n = self.x_n_1 + dt*self.vel
-        self.t_prev = t
+        self.x_n = (self.x_n_1 + dt*self.vel)   
+        if abs(acc[0]) < 0.0001:
+            acc[0] = 0
+            self.vel[0] = 0.0
+        if abs(acc[1]) < 0.0001:
+            acc[1] = 0
+            self.vel[1] = 0.0
+        if abs(acc[2]) < 0.0001:
+            acc[2] = 0
+            self.vel[2] = 0.0
         self.tr.header.stamp = Time.now()
         self.tr.header.frame_id = "world"
         self.tr.child_frame_id = "imu"
-        self.tr.transform.translation.x = -self.x_n[0]
-        self.tr.transform.translation.y = -self.x_n[1]
-        self.tr.transform.translation.z = -self.x_n[2]
+        self.tr.transform.translation.x = self.x_n[0]
+        self.tr.transform.translation.y = self.x_n[1]
+        self.tr.transform.translation.z = self.x_n[2]
         self.tr.transform.rotation.x = quat[0]
         self.tr.transform.rotation.y = quat[1]
         self.tr.transform.rotation.z = quat[2]
@@ -94,7 +93,7 @@ class imu_visualizer:
         if delta_distX < 0.05 and delta_distY < 0.05:
             self.counter += 1
             self.marker.pose.position.x = float(random.randint(-5, 5))/20
-            self.marker.pose.position.y = float(random.randint(-5,5))/20
+            self.marker.pose.position.y = float(random.randint(-5, 5))/20
             print("new marker position:", self.marker.pose.position.x, self.marker.pose.position.y)
             self.marker.pose.position.z = 0
             print("you got number of points! :", self.counter)

@@ -164,7 +164,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
  catkin_install_python(PROGRAMS
-   scripts/pub.py scripts/sub.py scripts/pubstl.py scripts/keyboard.py scripts/state.py scripts/imudata.py scripts/rviz.py
+   scripts/pub.py scripts/sub.py scripts/pubstl.py scripts/keyboard.py scripts/state.py scripts/imudata.py scripts/rviz.py scripts/recorded_imu_pub.py scripts/recorded_imu_path.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

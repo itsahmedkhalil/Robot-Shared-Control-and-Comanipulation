@@ -89,6 +89,8 @@ def main():
     print ("Sensor is streaming data: {}".format(is_streaming))
 
     calibratedData = []
+    calibratedDataX = []
+    calibratedDataY = []
     for i in range(400):
         zenEvent = client.wait_for_next_event()
 
@@ -101,13 +103,18 @@ def main():
             imu_data = zenEvent.data.imu_data
         acc_init = np.array(imu_data.a)
         calibratedData.append(acc_init)
+        calibratedDataX.append(acc_init[0])
+        calibratedDataY.append(acc_init[1])
         i+=1
+
+    x_offset = sum(calibratedDataX)/len(calibratedDataX)
+    y_offset = sum(calibratedDataY)/len(calibratedData)
     np_calibratedData = np.array(calibratedData)
     g = np.sum(np.linalg.norm(np_calibratedData, axis=1)/np.shape(np_calibratedData)[0])
     #     print("Calibration Completed")
     # start streaming data
 
-    dir = os.path.dirname(os.path.realpath(__file__))[:-7] #[:-8]
+    dir = os.path.dirname(os.path.realpath(__file__))[:-7] 
     M = np.load(dir + 'data' + '/sensitivity.npy')
     b_a = np.load(dir + 'data' + '/offset.npy')
     Mi = np.linalg.inv(M)
@@ -115,10 +122,11 @@ def main():
     a_i =[0.9244278933486572]
     r_acc_1 = np.zeros(3)
     r_acc_filt_1 = np.zeros(3)
-    #print(M)
-    #print(b_a)
+
+    t_prev = rospy.get_time()
     while not rospy.is_shutdown():
         try:
+            
             zenEvent = client.wait_for_next_event()
 
             # check if its an IMU sample event and if it
@@ -128,7 +136,8 @@ def main():
                 zenEvent.component.handle == imu.component.handle:
 
                 imu_data = zenEvent.data.imu_data
-            acc = np.array(imu_data.a)
+            acc = np.array(imu_data.a) #- np.array([x_offset, y_offset, 0])
+            #print(calibratedDataX, calibratedDataY)
             #acc_r = acc.reshape(3,1)
             #diff =  (acc_r - b_a)
             #acc_hat = np.dot(Mi,diff)
@@ -138,28 +147,31 @@ def main():
             #print(acc_hat)
             #acc_hat = np.asarray(acc_hat)
             quat = np.array(imu_data.q)
-            r = R.from_quat([quat[1],quat[2],quat[3],-quat[0]])
+            r = R.from_quat([-quat[1],-quat[2],-quat[3],quat[0]])
             r_acc = r.apply(acc)
             r_acc = (r_acc + np.array([0, 0, g]))*9.81
+            print(r_acc)
             r_acc_filt = a_i[0]*r_acc_filt_1 + b_i[0]*r_acc + b_i[1]*r_acc_1
-
-            imu_raw.time = rospy.get_time()
+            
+            time = rospy.get_time()
+            imu_raw.dt = time - t_prev
             imu_raw.acceleration.x = r_acc[0]
             imu_raw.acceleration.y = r_acc[1]
             imu_raw.acceleration.z = r_acc[2]
             imu_raw.linearaccel.x = r_acc_filt[0]
             imu_raw.linearaccel.y = r_acc_filt[1]
             imu_raw.linearaccel.z = r_acc_filt[2]
-            imu_raw.orientation.w = -quat[0]
-            imu_raw.orientation.x = quat[1]
-            imu_raw.orientation.y = quat[2]
-            imu_raw.orientation.z = quat[3]
+            imu_raw.orientation.w = quat[0]
+            imu_raw.orientation.x = -quat[1]
+            imu_raw.orientation.y = -quat[2]
+            imu_raw.orientation.z = -quat[3]
             
             #print(acc)
             #imu_raw.stamp = rospy.Time.now()
             imuPub.publish(imu_raw)
             r_acc_1 = r_acc
             r_acc_filt_1 = r_acc_filt
+            t_prev = time
         except rospy.ROSInterruptException:
             pass
         rate.sleep()
